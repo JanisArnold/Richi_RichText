@@ -1,0 +1,13 @@
+.richi {
+    border: 1px solid black;
+}
+
+.richi-content {
+    height: auto;
+    min-height: 100px;
+    /*display: inline-block;*/
+}
+
+.richi-content:focus-visible {
+    outline: none;
+}
