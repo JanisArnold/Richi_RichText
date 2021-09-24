@@ -2,12 +2,17 @@
     border: 1px solid black;
 }
 
-.richi-content {
+.richi-text {
     height: auto;
     min-height: 100px;
     /*display: inline-block;*/
 }
 
-.richi-content:focus-visible {
+.richi-html{
+    width: 100%;
+    resize: none;
+}
+
+.richi-text:focus-visible {
     outline: none;
 }
