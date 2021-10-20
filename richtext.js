@@ -112,7 +112,6 @@ function switchDisplay(element) {
         }
 
         text.innerHTML = html.value;
-
     }
     //console.log(text);
     //console.log(html);
@@ -150,7 +149,6 @@ function textAddTag(element, tag) {
 
     tmpText = tmpText.replace("<richi-tmp>", "<" + tag + ">");
     tmpText = tmpText.replace("</richi-tmp>", "</" + tag + ">");
-    console.log(tmpText);
 
     content.innerHTML = tmpText;
 }
@@ -185,7 +183,6 @@ function cleanCode(element, tag) {
     }
 
     text = text.replace(new RegExp("<" + tag + "></" + tag + ">", "g"), "");
-    console.log(text);
     element.getElementsByClassName("richi-text")[0].innerHTML = text;
 }
 
@@ -203,3 +200,11 @@ function cleanCode(element, tag) {
 
     console.log(text);
 }*/
+
+//Function to get the value of The Richtext content
+function getRichiValue(id) {
+    const element = document.getElementById(id);
+    if (element && element.className.includes("richi")) {
+        return element.getElementsByClassName("richi-text")[0].innerHTML;
+    }
+}
