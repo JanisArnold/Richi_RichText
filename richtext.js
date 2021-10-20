@@ -9,7 +9,26 @@ for (const richi of richis) {
 
 function richiHeader() {
     const richi_header = document.createElement("DIV");
-    richi_header.className = "richi-header"
+    richi_header.className = "richi-header";
+
+    //Dropdown H1 - H6
+    const richi_btn_h = document.createElement("SELECT");
+
+    let richi_btn_hText = document.createElement("option");
+    richi_btn_hText.innerText = "Text";
+    richi_btn_h.appendChild(richi_btn_hText);
+
+    let richi_btn_h1 = document.createElement("option");
+    richi_btn_h1.value = "H1";
+    richi_btn_h1.innerText = "Heading 1";
+    richi_btn_h.appendChild(richi_btn_h1);
+
+    let richi_btn_h2 = document.createElement("option");
+    richi_btn_h2.value = "H2";
+    richi_btn_h2.innerText = "Heading 2";
+    richi_btn_h.appendChild(richi_btn_h2);
+
+    richi_header.appendChild(richi_btn_h);
 
     //Button Bold
     const richi_btn_bold = document.createElement("BUTTON");
@@ -19,6 +38,15 @@ function richiHeader() {
     };
     richi_header.appendChild(richi_btn_bold);
 
+    //Button Italic
+    const richi_btn_italic = document.createElement("BUTTON");
+    richi_btn_italic.innerHTML = "I";
+    richi_btn_italic.onclick = function() {
+        textAddOrRemoveTag(this.parentNode.parentNode, "i");
+    };
+    richi_header.appendChild(richi_btn_italic);
+
+    //Button HTML
     const richi_btn_html = document.createElement("BUTTON");
     richi_btn_html.innerHTML = "<>";
     richi_btn_html.onclick = function() {
