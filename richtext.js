@@ -165,6 +165,19 @@ function textRemoveTag(element, tag) {
 
     content.innerHTML = richiTmpBefore + richiTmp + richiTmpAfter;
 
+    let contentText = content.innerHTML;
+    contentText = contentText.replace('<richi-tmp>', "</" + tag + ">");
+
+    let tmp = contentText.slice(contentText.search('</richi-tmp>'));
+    let startTag = tmp.search("<" + tag + ">");
+    let endTag = tmp.search("</" + tag + ">");
+
+    if (startTag > endTag || (startTag === -1 && endTag > 0)) {
+        contentText = contentText.replace('</richi-tmp>', "<" + tag + ">");
+    }
+    
+    content.innerHTML = contentText;
+
     cleanCode(element, tag);
 }
 
@@ -172,18 +185,8 @@ function cleanCode(element, tag) {
     const content = element.getElementsByClassName("richi-text")[0];
     let text = content.innerHTML;
 
-    text = text.replace('<richi-tmp>', "</" + tag + ">");
-
-    let tmp = text.slice(text.search('</richi-tmp>'));
-    let startTag = tmp.search("<" + tag + ">");
-    let endTag = tmp.search("</" + tag + ">");
-
-    if (startTag > endTag || (startTag === -1 && endTag > 0)) {
-        text = text.replace('</richi-tmp>', "<" + tag + ">");
-    }
-
     text = text.replace(new RegExp("<" + tag + "></" + tag + ">", "g"), "");
-    element.getElementsByClassName("richi-text")[0].innerHTML = text;
+    content.innerHTML = text;
 }
 
 /*function update(id) {
