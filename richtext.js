@@ -1,5 +1,7 @@
 console.log("Richi is running");
-const richis = document.getElementsByClassName('richi')
+const richis = document.getElementsByClassName('richi');
+const richi_start_tag = "<richi-tmp>";
+const richi_end_tag = "</richi-tmp>";
 
 for (const richi of richis) {
     richi.appendChild(richiHeader());
@@ -34,7 +36,7 @@ function richiHeader() {
     const richi_btn_bold = document.createElement("BUTTON");
     richi_btn_bold.innerHTML = "B";
     richi_btn_bold.onclick = function() {
-        textAddOrRemoveTag(this.parentNode.parentNode, "strong");
+        textAddOrRemoveTag(this.parentNode.parentNode, ["strong"]);
     };
     richi_header.appendChild(richi_btn_bold);
 
@@ -42,9 +44,17 @@ function richiHeader() {
     const richi_btn_italic = document.createElement("BUTTON");
     richi_btn_italic.innerHTML = "I";
     richi_btn_italic.onclick = function() {
-        textAddOrRemoveTag(this.parentNode.parentNode, "i");
+        textAddOrRemoveTag(this.parentNode.parentNode, ["i"]);
     };
     richi_header.appendChild(richi_btn_italic);
+
+    //Button Remove Format
+    const richi_btn_remove = document.createElement("BUTTON");
+    richi_btn_remove.innerHTML = "Remove";
+    richi_btn_remove.onclick = function() {
+        textRemoveFormats(this.parentNode.parentNode, ["strong", "i"]);
+    };
+    richi_header.appendChild(richi_btn_remove);
 
     //Button HTML
     const richi_btn_html = document.createElement("BUTTON");
@@ -129,17 +139,31 @@ function textAddOrRemoveTag(element, tag) {
 
         let content = element.getElementsByClassName("richi-text")[0].innerHTML;
 
-        let tmpRichiText = content.slice(content.search('<richi-tmp>'), content.search('</richi-tmp>'));
+        let tmpRichiText = content.slice(content.search(richi_start_tag), content.search(richi_end_tag));
 
-        let tmpText = content.slice(0, content.search('<richi-tmp>'));
+        let tmpText = content.slice(0, content.search(richi_start_tag));
         let startTag = tmpText.lastIndexOf("<" + tag + ">");
         let endTag = tmpText.lastIndexOf("</" + tag + ">");
 
         if (tmpRichiText.search('<' + tag + '>') > 0 || (startTag > endTag)) {
-            textRemoveTag(element, tag);
+            textRemoveTags(element, tag);
         } else {
             textAddTag(element, tag);
         }
+    }
+}
+
+function textRemoveFormats(element, tags) {
+    const sel = window.getSelection();
+    if (sel != 0) {
+        let range = sel.getRangeAt(0).cloneRange();
+        let rangeContent = range.extractContents();
+        let richiTmp = document.createElement('richi-tmp');
+
+        richiTmp.appendChild(rangeContent);
+        range.insertNode(richiTmp);
+
+        textRemoveTags(element, tags);
     }
 }
 
@@ -147,45 +171,57 @@ function textAddTag(element, tag) {
     let content = element.getElementsByClassName("richi-text")[0];
     let tmpText = content.innerHTML;
 
-    tmpText = tmpText.replace("<richi-tmp>", "<" + tag + ">");
-    tmpText = tmpText.replace("</richi-tmp>", "</" + tag + ">");
+    tmpText = tmpText.replace(richi_start_tag, "<" + tag + ">");
+    tmpText = tmpText.replace(richi_end_tag, "</" + tag + ">");
 
     content.innerHTML = tmpText;
-}
-
-function textRemoveTag(element, tag) {
-    let content = element.getElementsByClassName("richi-text")[0];
-
-    let richiTmpBefore = content.innerHTML.slice(0, content.innerHTML.search('<richi-tmp>'));
-    let richiTmp = content.innerHTML.slice(content.innerHTML.search('<richi-tmp>'), content.innerHTML.search('</richi-tmp>'));
-    let richiTmpAfter = content.innerHTML.slice(content.innerHTML.search('</richi-tmp>'));
-
-    richiTmp = richiTmp.replace(new RegExp("<" + tag + ">", "g"), "");
-    richiTmp = richiTmp.replace(new RegExp("</" + tag + ">", "g"), "");
-
-    content.innerHTML = richiTmpBefore + richiTmp + richiTmpAfter;
-
-    let contentText = content.innerHTML;
-    contentText = contentText.replace('<richi-tmp>', "</" + tag + ">");
-
-    let tmp = contentText.slice(contentText.search('</richi-tmp>'));
-    let startTag = tmp.search("<" + tag + ">");
-    let endTag = tmp.search("</" + tag + ">");
-
-    if (startTag > endTag || (startTag === -1 && endTag > 0)) {
-        contentText = contentText.replace('</richi-tmp>', "<" + tag + ">");
-    }
-    
-    content.innerHTML = contentText;
 
     cleanCode(element, tag);
 }
 
-function cleanCode(element, tag) {
+function textRemoveTags(element, tags) {
+    let content = element.getElementsByClassName("richi-text")[0];
+
+    tags.forEach(tag => {
+        let contentText;
+        let richiTmpBefore = content.innerHTML.slice(0, content.innerHTML.search(richi_start_tag));
+        let richiTmp = content.innerHTML.slice(content.innerHTML.search(richi_start_tag), content.innerHTML.search(richi_end_tag) + richi_end_tag.length);
+        let richiTmpAfter = content.innerHTML.slice(content.innerHTML.search(richi_end_tag) + richi_end_tag.length);     
+    
+        let tmp = content.innerHTML.slice(content.innerHTML.search(richi_end_tag));
+        let startTag = tmp.search("<" + tag + ">");
+        let endTag = tmp.search("</" + tag + ">");
+    
+        if (startTag > endTag || (startTag === -1 && endTag > 0)) {
+            richiTmpAfter = "<" + tag + ">" + richiTmpAfter;
+        }
+
+        richiTmp = richiTmp.replace(new RegExp("<" + tag + ">", "g"), "");
+        richiTmp = richiTmp.replace(new RegExp("</" + tag + ">", "g"), "");
+
+        contentText = richiTmpBefore + "</" + tag + ">" + richiTmp + richiTmpAfter;
+
+        content.innerHTML = contentText;
+    });
+
+    cleanCode(element, tags);
+}
+
+function cleanCode(element, tags) {
     const content = element.getElementsByClassName("richi-text")[0];
     let text = content.innerHTML;
 
-    text = text.replace(new RegExp("<" + tag + "></" + tag + ">", "g"), "");
+    tags.forEach(tag => {
+        text = text.replace(new RegExp("</p><" + tag + "><p>", "g"), "<" + tag + ">");
+        text = text.replace(new RegExp("</p></" + tag + "><p>", "g"), "</" + tag + ">");
+        text = text.replace(new RegExp("<" + tag + "></" + tag + ">", "g"), "");
+    });
+
+    text = text.replace(new RegExp("</p>" + richi_start_tag + "<p>", "g"), "");
+    text = text.replace(new RegExp(richi_start_tag, "g"), "");
+    text = text.replace(new RegExp("</p>" + richi_end_tag + "<p>", "g"), "");
+    text = text.replace(new RegExp(richi_end_tag, "g"), "");
+    
     content.innerHTML = text;
 }
 
