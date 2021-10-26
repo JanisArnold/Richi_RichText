@@ -186,12 +186,12 @@ function textRemoveTags(element, tags) {
         let contentText;
         let richiTmpBefore = content.innerHTML.slice(0, content.innerHTML.search(richi_start_tag));
         let richiTmp = content.innerHTML.slice(content.innerHTML.search(richi_start_tag), content.innerHTML.search(richi_end_tag) + richi_end_tag.length);
-        let richiTmpAfter = content.innerHTML.slice(content.innerHTML.search(richi_end_tag) + richi_end_tag.length);     
-    
+        let richiTmpAfter = content.innerHTML.slice(content.innerHTML.search(richi_end_tag) + richi_end_tag.length);
+
         let tmp = content.innerHTML.slice(content.innerHTML.search(richi_end_tag));
         let startTag = tmp.search("<" + tag + ">");
         let endTag = tmp.search("</" + tag + ">");
-    
+
         if (startTag > endTag || (startTag === -1 && endTag > 0)) {
             richiTmpAfter = "<" + tag + ">" + richiTmpAfter;
         }
@@ -221,7 +221,7 @@ function cleanCode(element, tags) {
     text = text.replace(new RegExp(richi_start_tag, "g"), "");
     text = text.replace(new RegExp("</p>" + richi_end_tag + "<p>", "g"), "");
     text = text.replace(new RegExp(richi_end_tag, "g"), "");
-    
+
     content.innerHTML = text;
 }
 
@@ -245,5 +245,13 @@ function getRichiValue(id) {
     const element = document.getElementById(id);
     if (element && element.className.includes("richi")) {
         return element.getElementsByClassName("richi-text")[0].innerHTML;
+    }
+}
+
+//Function to set the value of The Richtext content
+function setRichiValue(id, value) {
+    const element = document.getElementById(id);
+    if (element && element.className.includes("richi")) {
+        element.getElementsByClassName("richi-text")[0].innerHTML = value;
     }
 }
