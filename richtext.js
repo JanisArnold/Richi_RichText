@@ -15,6 +15,7 @@ function richiHeader() {
 
     //Dropdown H1 - H6
     const richi_btn_h = document.createElement("SELECT");
+    richi_btn_h.addEventListener("change", textAddHeading(this.selection));
 
     let richi_btn_hText = document.createElement("option");
     richi_btn_hText.innerText = "Text";
@@ -86,12 +87,43 @@ function richiText() {
         }
     });
 
-    /*richi_text.addEventListener("keydown", function(e) {
-        if (richi_text.innerHTML === "") {
-            e.preventDefault();
-            richi_text.innerHTML = "<p><br></p>";
-        }
-    });*/
+
+    richi_text.onselectstart = () => {
+        console.log('Selection changed.');
+    };
+
+    richi_text.addEventListener("selectstart", function(e) {
+        console.log(e);
+        let path = e.composedPath();
+        path = path.slice(0, path.indexOf(richi_text));
+        path.forEach(element => {
+            console.log(element.nodeName);
+        });
+    })
+
+    richi_text.addEventListener("keyup", function(e) {
+        console.log(richi_text.selectionStart);
+
+        var el = document.getElementById("editable");
+        var range = document.createRange();
+        var sel = window.getSelection();
+
+        range.setStart(this, 1);
+        range.collapse(true);
+
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        //https://stackoverflow.com/questions/6249095/how-to-set-the-caret-cursor-position-in-a-contenteditable-element-div
+        /*let sel = getSelection().getRangeAt(0).cloneRange();
+        console.log(sel);
+
+        let path = test.composedPath();
+        path = path.slice(0, path.indexOf(richi_text));
+        path.forEach(element => {
+            console.log(element.nodeName);
+        });*/
+    })
 
     return richi_text;
 }
@@ -127,6 +159,11 @@ function switchDisplay(element) {
     //console.log(html);
 }
 
+function textAddHeading(selection) {
+    console.log(selection);
+    //console.log(element);
+}
+
 function textAddOrRemoveTag(element, tag) {
     const sel = window.getSelection();
     if (sel != 0) {
@@ -150,11 +187,14 @@ function textAddOrRemoveTag(element, tag) {
         } else {
             textAddTag(element, tag);
         }
+
+        cleanCode(element, tag);
     }
 }
 
 function textRemoveFormats(element, tags) {
     const sel = window.getSelection();
+    console.log(sel);
     if (sel != 0) {
         let range = sel.getRangeAt(0).cloneRange();
         let rangeContent = range.extractContents();
@@ -164,6 +204,7 @@ function textRemoveFormats(element, tags) {
         range.insertNode(richiTmp);
 
         textRemoveTags(element, tags);
+        cleanCode(element, tags);
     }
 }
 
@@ -175,8 +216,6 @@ function textAddTag(element, tag) {
     tmpText = tmpText.replace(richi_end_tag, "</" + tag + ">");
 
     content.innerHTML = tmpText;
-
-    cleanCode(element, tag);
 }
 
 function textRemoveTags(element, tags) {
@@ -203,8 +242,6 @@ function textRemoveTags(element, tags) {
 
         content.innerHTML = contentText;
     });
-
-    cleanCode(element, tags);
 }
 
 function cleanCode(element, tags) {
