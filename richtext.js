@@ -2,6 +2,7 @@ console.log("Richi is running");
 const richis = document.getElementsByClassName('richi');
 const richi_start_tag = "<richi-tmp>";
 const richi_end_tag = "</richi-tmp>";
+var cursor_path = [];
 
 for (const richi of richis) {
     richi.appendChild(richiHeader());
@@ -35,6 +36,7 @@ function richiHeader() {
 
     //Button Bold
     const richi_btn_bold = document.createElement("BUTTON");
+    richi_btn_bold.id = "btn_strong";
     richi_btn_bold.innerHTML = "B";
     richi_btn_bold.onclick = function() {
         textAddOrRemoveTag(this.parentNode.parentNode, ["strong"]);
@@ -43,6 +45,7 @@ function richiHeader() {
 
     //Button Italic
     const richi_btn_italic = document.createElement("BUTTON");
+    richi_btn_italic.id = "btn_i";
     richi_btn_italic.innerHTML = "I";
     richi_btn_italic.onclick = function() {
         textAddOrRemoveTag(this.parentNode.parentNode, ["i"]);
@@ -76,7 +79,7 @@ function richiHeader() {
 }
 
 function richiText() {
-    var richi_text = document.createElement("DIV");
+    let richi_text = document.createElement("DIV");
     richi_text.className = "richi-text";
     richi_text.innerHTML = "<p>test <strong>test</strong> test</p>";
     richi_text.contentEditable = "true";
@@ -87,43 +90,27 @@ function richiText() {
         }
     });
 
+    richi_text.addEventListener('keyup', () => cursorMove());
+    richi_text.addEventListener('click', () => cursorMove());
 
-    richi_text.onselectstart = () => {
-        console.log('Selection changed.');
-    };
+    function cursorMove(){
+        let sel = window.getSelection();
+        let node = sel.baseNode;
+        let path = [];
 
-    richi_text.addEventListener("selectstart", function(e) {
-        console.log(e);
-        let path = e.composedPath();
-        path = path.slice(0, path.indexOf(richi_text));
-        path.forEach(element => {
-            console.log(element.nodeName);
-        });
-    })
+        do {
+            path.push(node.parentNode);
+            node = node.parentNode;
+        } while (path[path.length -1] !== richi_text);
 
-    richi_text.addEventListener("keyup", function(e) {
-        console.log(richi_text.selectionStart);
+        cursor_path = [];
 
-        var el = document.getElementById("editable");
-        var range = document.createRange();
-        var sel = window.getSelection();
+        for (let i of path) {
+            cursor_path.push(i.tagName);
+        }
 
-        range.setStart(this, 1);
-        range.collapse(true);
-
-        sel.removeAllRanges();
-        sel.addRange(range);
-
-        //https://stackoverflow.com/questions/6249095/how-to-set-the-caret-cursor-position-in-a-contenteditable-element-div
-        /*let sel = getSelection().getRangeAt(0).cloneRange();
-        console.log(sel);
-
-        let path = test.composedPath();
-        path = path.slice(0, path.indexOf(richi_text));
-        path.forEach(element => {
-            console.log(element.nodeName);
-        });*/
-    })
+        updateNav(path[path.length -1].parentNode);
+    }
 
     return richi_text;
 }
@@ -164,8 +151,27 @@ function textAddHeading(selection) {
     //console.log(element);
 }
 
-function textAddOrRemoveTag(element, tag) {
+function checkTag(tag){
     const sel = window.getSelection();
+    let nodeList = [];
+    if (sel != 0) {
+        let range = sel.getRangeAt(0).cloneRange();
+        let rangeContent = range.cloneContents();
+        let richiTmp = document.createElement('richi-tmp');
+
+        richiTmp.appendChild(rangeContent);
+        for (node of richiTmp.childNodes) {
+            nodeList.push(node.tagName);
+        }
+        console.log(nodeList)
+    }
+    return cursor_path.includes(tag.toUpperCase()) || nodeList.includes(tag.toUpperCase());
+}
+
+function textAddOrRemoveTag(element, tag) {
+    let check = checkTag(tag[0]);
+    const sel = window.getSelection();
+    console.log(check);
     if (sel != 0) {
         let range = sel.getRangeAt(0).cloneRange();
         let rangeContent = range.extractContents();
@@ -174,17 +180,9 @@ function textAddOrRemoveTag(element, tag) {
         richiTmp.appendChild(rangeContent);
         range.insertNode(richiTmp);
 
-        let content = element.getElementsByClassName("richi-text")[0].innerHTML;
-
-        let tmpRichiText = content.slice(content.search(richi_start_tag), content.search(richi_end_tag));
-
-        let tmpText = content.slice(0, content.search(richi_start_tag));
-        let startTag = tmpText.lastIndexOf("<" + tag + ">");
-        let endTag = tmpText.lastIndexOf("</" + tag + ">");
-
-        if (tmpRichiText.search('<' + tag + '>') > 0 || (startTag > endTag)) {
+        if (check) {
             textRemoveTags(element, tag);
-        } else {
+        }else{
             textAddTag(element, tag);
         }
 
@@ -220,6 +218,7 @@ function textAddTag(element, tag) {
 
 function textRemoveTags(element, tags) {
     let content = element.getElementsByClassName("richi-text")[0];
+    console.log(tags);
 
     tags.forEach(tag => {
         let contentText;
@@ -260,6 +259,22 @@ function cleanCode(element, tags) {
     text = text.replace(new RegExp(richi_end_tag, "g"), "");
 
     content.innerHTML = text;
+}
+
+function updateNav(element){
+    let header = element.getElementsByClassName("richi-header")[0];
+    let tags = [];
+    console.log(header.getElementsByTagName("button"));
+    [...header.getElementsByTagName("button")].forEach(item => {
+        let tag = item.id.slice(4);
+        console.log(item, tag);
+        if (checkTag(tag)) {
+            item.style = "font-weight: bold";
+        }else{
+            item.style = "font-weight: normal";
+        }
+    })
+    console.log(tags);
 }
 
 /*function update(id) {
