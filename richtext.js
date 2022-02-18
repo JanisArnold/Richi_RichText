@@ -38,7 +38,7 @@ function richiHeader() {
     const richi_btn_bold = document.createElement("BUTTON");
     richi_btn_bold.id = "btn_strong";
     richi_btn_bold.innerHTML = "B";
-    richi_btn_bold.onclick = function() {
+    richi_btn_bold.onclick = function () {
         textAddOrRemoveTag(this.parentNode.parentNode, ["strong"]);
     };
     richi_header.appendChild(richi_btn_bold);
@@ -47,7 +47,7 @@ function richiHeader() {
     const richi_btn_italic = document.createElement("BUTTON");
     richi_btn_italic.id = "btn_i";
     richi_btn_italic.innerHTML = "I";
-    richi_btn_italic.onclick = function() {
+    richi_btn_italic.onclick = function () {
         textAddOrRemoveTag(this.parentNode.parentNode, ["i"]);
     };
     richi_header.appendChild(richi_btn_italic);
@@ -55,7 +55,7 @@ function richiHeader() {
     //Button Remove Format
     const richi_btn_remove = document.createElement("BUTTON");
     richi_btn_remove.innerHTML = "Remove";
-    richi_btn_remove.onclick = function() {
+    richi_btn_remove.onclick = function () {
         textRemoveFormats(this.parentNode.parentNode, ["strong", "i"]);
     };
     richi_header.appendChild(richi_btn_remove);
@@ -63,7 +63,7 @@ function richiHeader() {
     //Button HTML
     const richi_btn_html = document.createElement("BUTTON");
     richi_btn_html.innerHTML = "<>";
-    richi_btn_html.onclick = function() {
+    richi_btn_html.onclick = function () {
         switchDisplay(this.parentNode.parentNode);
     };
     richi_header.appendChild(richi_btn_html);
@@ -84,7 +84,7 @@ function richiText() {
     richi_text.innerHTML = "<p>test <strong>test</strong> test</p>";
     richi_text.contentEditable = "true";
 
-    richi_text.addEventListener("keydown", function(e) {
+    richi_text.addEventListener("keydown", function (e) {
         if (richi_text.innerHTML === "<p><br></p>" && e.key === "Backspace") {
             e.preventDefault();
         }
@@ -93,7 +93,7 @@ function richiText() {
     richi_text.addEventListener('keyup', () => cursorMove());
     richi_text.addEventListener('click', () => cursorMove());
 
-    function cursorMove(){
+    function cursorMove() {
         let sel = window.getSelection();
         let node = sel.baseNode;
         let path = [];
@@ -101,7 +101,7 @@ function richiText() {
         do {
             path.push(node.parentNode);
             node = node.parentNode;
-        } while (path[path.length -1] !== richi_text);
+        } while (path[path.length - 1] !== richi_text);
 
         cursor_path = [];
 
@@ -109,7 +109,7 @@ function richiText() {
             cursor_path.push(i.tagName);
         }
 
-        updateNav(path[path.length -1].parentNode);
+        updateNav(path[path.length - 1].parentNode);
     }
 
     return richi_text;
@@ -151,19 +151,22 @@ function textAddHeading(selection) {
     //console.log(element);
 }
 
-function checkTag(tag){
+function checkTag(tag) {
     const sel = window.getSelection();
     let nodeList = [];
-    if (sel != 0) {
+    if (sel != 0 && tag != "") {
         let range = sel.getRangeAt(0).cloneRange();
         let rangeContent = range.cloneContents();
         let richiTmp = document.createElement('richi-tmp');
-
         richiTmp.appendChild(rangeContent);
-        for (node of richiTmp.childNodes) {
+
+        let content = richiTmp.querySelectorAll(tag);
+        //console.log(content);
+        for (node of [...content]) {
             nodeList.push(node.tagName);
         }
-        console.log(nodeList)
+        //console.log(nodeList);
+        //console.log(nodeList.includes(tag.toUpperCase()));
     }
     return cursor_path.includes(tag.toUpperCase()) || nodeList.includes(tag.toUpperCase());
 }
@@ -171,7 +174,7 @@ function checkTag(tag){
 function textAddOrRemoveTag(element, tag) {
     let check = checkTag(tag[0]);
     const sel = window.getSelection();
-    console.log(check);
+    //console.log(check);
     if (sel != 0) {
         let range = sel.getRangeAt(0).cloneRange();
         let rangeContent = range.extractContents();
@@ -182,7 +185,7 @@ function textAddOrRemoveTag(element, tag) {
 
         if (check) {
             textRemoveTags(element, tag);
-        }else{
+        } else {
             textAddTag(element, tag);
         }
 
@@ -261,20 +264,22 @@ function cleanCode(element, tags) {
     content.innerHTML = text;
 }
 
-function updateNav(element){
+function updateNav(element) {
     let header = element.getElementsByClassName("richi-header")[0];
-    let tags = [];
-    console.log(header.getElementsByTagName("button"));
-    [...header.getElementsByTagName("button")].forEach(item => {
-        let tag = item.id.slice(4);
-        console.log(item, tag);
-        if (checkTag(tag)) {
-            item.style = "font-weight: bold";
-        }else{
-            item.style = "font-weight: normal";
+    //console.log(header.getElementsByTagName("button"));
+    let tags = [...header.getElementsByTagName("button")];
+    //console.log(tags);
+    tags.forEach(item => {
+        if (item.id) {
+            let tag = item.id.slice(4);
+            //console.log(item, tag);
+            if (checkTag(tag)) {
+                item.style = "font-weight: bold";
+            } else {
+                item.style = "font-weight: normal";
+            }
         }
     })
-    console.log(tags);
 }
 
 /*function update(id) {
