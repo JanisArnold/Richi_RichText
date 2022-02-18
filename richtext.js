@@ -18,8 +18,15 @@ function richiHeader() {
     const richi_btn_h = document.createElement("SELECT");
     richi_btn_h.addEventListener("change", textAddHeading(this.selection));
 
+    let richi_btn_hEmpty = document.createElement("option");
+    richi_btn_hEmpty.value = "Empty";
+    richi_btn_hEmpty.style.display = "none";
+    richi_btn_h.appendChild(richi_btn_hEmpty);
+
     let richi_btn_hText = document.createElement("option");
+    richi_btn_hText.value = "Text";
     richi_btn_hText.innerText = "Text";
+    richi_btn_hText.selected = true;
     richi_btn_h.appendChild(richi_btn_hText);
 
     let richi_btn_h1 = document.createElement("option");
@@ -81,7 +88,7 @@ function richiHeader() {
 function richiText() {
     let richi_text = document.createElement("DIV");
     richi_text.className = "richi-text";
-    richi_text.innerHTML = "<p>test <strong>test</strong> test</p>";
+    richi_text.innerHTML = "<h2>Test</h2><p>test <strong>test</strong> test<br>test test test</p><p>test <i>test</i> test</p>";
     richi_text.contentEditable = "true";
 
     richi_text.addEventListener("keydown", function (e) {
@@ -277,6 +284,19 @@ function updateNav(element) {
                 item.style = "font-weight: bold";
             } else {
                 item.style = "font-weight: normal";
+            }
+        }
+    })
+
+    let selected = [...header.getElementsByTagName("option")];
+    console.log(selected);
+    let s_tags = [];
+    selected.forEach(item =>{
+        console.log();
+        if (item.value) {
+            if (checkTag(item.nodeValue)) {
+                s_tags.push(item.value);
+                console.log(s_tags);
             }
         }
     })
