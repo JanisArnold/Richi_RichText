@@ -24,7 +24,7 @@ function richiHeader() {
     richi_btn_h.appendChild(richi_btn_hEmpty);
 
     let richi_btn_hText = document.createElement("option");
-    richi_btn_hText.value = "Text";
+    richi_btn_hText.value = "P";
     richi_btn_hText.innerText = "Text";
     richi_btn_hText.selected = true;
     richi_btn_h.appendChild(richi_btn_hText);
@@ -88,8 +88,9 @@ function richiHeader() {
 function richiText() {
     let richi_text = document.createElement("DIV");
     richi_text.className = "richi-text";
-    richi_text.innerHTML = "<h2>Test</h2><p>test <strong>test</strong> test<br>test test test</p><p>test <i>test</i> test</p>";
+    richi_text.innerHTML = "<p><h2>Test</h2></p><p>test <strong>test</strong> test<br>test test test</p><p>test <i>test</i> test</p><p><h1>Test</h1></p>";
     richi_text.contentEditable = "true";
+    document.execCommand('defaultParagraphSeparator', false, 'p');
 
     richi_text.addEventListener("keydown", function (e) {
         if (richi_text.innerHTML === "<p><br></p>" && e.key === "Backspace") {
@@ -176,6 +177,32 @@ function checkTag(tag) {
         //console.log(nodeList.includes(tag.toUpperCase()));
     }
     return cursor_path.includes(tag.toUpperCase()) || nodeList.includes(tag.toUpperCase());
+}
+
+function checkTags(tag) {
+    const sel = window.getSelection();
+    let nodeList = [];
+    if (sel != 0 && tag != "") {
+        let range = sel.getRangeAt(0).cloneRange();
+        let rangeContent = range.cloneContents();
+        let richiTmp = document.createElement('richi-tmp');
+        richiTmp.appendChild(rangeContent);
+
+        let content = richiTmp.querySelectorAll(tag);
+        //console.log(content);
+        for (node of [...content]) {
+            nodeList.push(node.tagName);
+        }
+        //console.log(nodeList);
+        //console.log(nodeList.includes(tag.toUpperCase()));
+    }
+    //console.log(nodeList);
+    //console.log(cursor_path);
+    let i = cursor_path;
+    i = i.filter(e => e !== 'DIV')
+
+    return nodeList.concat(i);
+    //return cursor_path.includes(tag.toUpperCase()) || nodeList.includes(tag.toUpperCase());
 }
 
 function textAddOrRemoveTag(element, tag) {
@@ -291,15 +318,27 @@ function updateNav(element) {
     let selected = [...header.getElementsByTagName("option")];
     console.log(selected);
     let s_tags = [];
-    selected.forEach(item =>{
-        console.log();
+    selected.forEach(item => {
+        console.log(item.value);
         if (item.value) {
-            if (checkTag(item.nodeValue)) {
+            if (checkTags(item.value).includes(item.value)) {
                 s_tags.push(item.value);
-                console.log(s_tags);
             }
+            //s_tags.push(checkTags(item.value))
         }
     })
+    //console.log(s_tags);
+    switch (s_tags.length) {
+        case 0:
+            header.getElementsByTagName("select")[0].value = "Text";
+            break;
+        case 1:
+            header.getElementsByTagName("select")[0].value = s_tags[0];
+            break;
+        default:
+            header.getElementsByTagName("select")[0].value = "Empty";
+            break;
+    }
 }
 
 /*function update(id) {
