@@ -16,7 +16,10 @@ function richiHeader() {
 
     //Dropdown H1 - H6
     const richi_btn_h = document.createElement("SELECT");
-    richi_btn_h.addEventListener("change", textAddHeading(this.selection));
+    richi_btn_h.onchange = function(){
+        console.log(this.value);
+        textAddOrRemoveTag(this.parentNode.parentNode, [this.value])
+    };
 
     let richi_btn_hEmpty = document.createElement("option");
     richi_btn_hEmpty.value = "Empty";
@@ -63,7 +66,7 @@ function richiHeader() {
     const richi_btn_remove = document.createElement("BUTTON");
     richi_btn_remove.innerHTML = "Remove";
     richi_btn_remove.onclick = function () {
-        textRemoveFormats(this.parentNode.parentNode, ["strong", "i"]);
+        textRemoveFormats(this.parentNode.parentNode, ["strong", "i", "h1", "h2", "h3", "h4", "h5", "h6"]);
     };
     richi_header.appendChild(richi_btn_remove);
 
@@ -88,7 +91,7 @@ function richiHeader() {
 function richiText() {
     let richi_text = document.createElement("DIV");
     richi_text.className = "richi-text";
-    richi_text.innerHTML = "<p><h2>Test</h2></p><p>test <strong>test</strong> test<br>test test test</p><p>test <i>test</i> test</p><p><h1>Test</h1></p>";
+    richi_text.innerHTML = "<h2>Test</h2><p>test <strong>test</strong> test<br>test test test</p><p>test <i>test</i> test</p><h1>Test</h1>";
     richi_text.contentEditable = "true";
     document.execCommand('defaultParagraphSeparator', false, 'p');
 
@@ -298,6 +301,10 @@ function cleanCode(element, tags) {
     content.innerHTML = text;
 }
 
+function cleanHeadings() {
+    console.log(checkTags("p"));
+}
+
 function updateNav(element) {
     let header = element.getElementsByClassName("richi-header")[0];
     //console.log(header.getElementsByTagName("button"));
@@ -339,6 +346,7 @@ function updateNav(element) {
             header.getElementsByTagName("select")[0].value = "Empty";
             break;
     }
+    //cleanHeadings();
 }
 
 /*function update(id) {
