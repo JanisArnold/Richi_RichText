@@ -11,14 +11,28 @@
 
 <body>
     <div style="margin: auto 20%;">
-        <div id="inputDescription" class="richi"></div>
+        <div id="richi1">
+            <p>Hallo Richi!</p>
+            <p>Das ist nur <strong>ein schneller</strong> Test</p>
+        </div>
     </div>
     <br>
     <div style="margin: auto 20%;">
-        <div class="richi"></div>
+        <div id="richi2"></div>
     </div>
 </body>
 
 <script src="richi.js"></script>
+<script>
+    let richi1 = new Richi("richi1", {
+        modules: {
+            heading: 'advanced',
+            html: false
+        }
+    });
+
+    let richi2 = new Richi("richi2");
+
+</script>
 
 </html>
