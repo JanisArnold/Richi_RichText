@@ -1,0 +1,44 @@
+.richi-header, .richi-text, .richi-html {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border: 1px solid black;
+    width: 100%;
+}
+
+.richi-header{
+    display: flex;
+    gap: 5px;
+    border: 1px solid black;
+}
+
+.richi-header > button{
+    padding: 1px;
+    border: 0;
+    display: flex;
+    /*width: 25px;
+    height: 25px;*/
+}
+
+.richi-header > button > img {
+    width: 24px;
+    height: 24px;
+}
+
+.richi-header > #richi-btn-code{
+    margin-left: auto;
+}
+
+.richi-text {
+    height: auto;
+    min-height: 100px;
+    /*display: inline-block;*/
+}
+
+.richi-html {
+    width: 100%;
+    resize: none;
+    padding: 0;
+}
+
+.richi-text:focus-visible {
+    outline: none;
+}

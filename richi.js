@@ -10,30 +10,30 @@ class Richi {
         this.#id = id;
         this.#settings = (settings === undefined) ? {
             //debug: false,
-            modules: {
+            components: {
                 heading: 'simple',
                 bold: true,
                 italic: true,
                 clear: true,
-                html: true
+                code: true
             },
             placeholder: '<p>Richi Richtext...</p>',
             //readOnly: settings.readonly || false,
             //theme: settings.theme || 'default'
         } : {
             //debug: [true, false].includes(settings.debug) ? settings.debug : false,
-            modules: (settings.modules === undefined) ? {
+            components: (settings.components === undefined) ? {
                 heading: 'simple',
                 bold: true,
                 italic: true,
                 clear: true,
-                html: true
+                code: true
             } : {
-                heading: [false, 'simple', 'advanced'].includes(settings.modules.heading) ? settings.modules.heading : 'simple',
-                bold: [true, false].includes(settings.modules.bold) ? settings.modules.bold : true,
-                italic: [true, false].includes(settings.modules.italic) ? settings.modules.italic : true,
-                clear: [true, false].includes(settings.modules.clear) ? settings.modules.clear : true,
-                html: [true, false].includes(settings.modules.html) ? settings.modules.html : true
+                heading: [false, 'simple', 'advanced'].includes(settings.components.heading) ? settings.components.heading : 'simple',
+                bold: [true, false].includes(settings.components.bold) ? settings.components.bold : true,
+                italic: [true, false].includes(settings.components.italic) ? settings.components.italic : true,
+                clear: [true, false].includes(settings.components.clear) ? settings.components.clear : true,
+                code: [true, false].includes(settings.components.code) ? settings.components.code : true
             },
             placeholder: settings.placeholder || '<p>Richi Richtext...</p>',
             //readOnly: settings.readonly || false,
@@ -66,12 +66,12 @@ class Richi {
         const richi_header = document.createElement("DIV");
         richi_header.className = "richi-header";
 
-        switch (this.#settings.modules.heading) {
+        switch (this.#settings.components.heading) {
             case 'simple':
                 //Button Heading
                 const richi_btn_hs = document.createElement("BUTTON");
-                richi_btn_hs.id = "btn_h3";
-                richi_btn_hs.innerHTML = "Heading";
+                richi_btn_hs.id = "richi-btn-h3";
+                richi_btn_hs.innerHTML = '<img src="icons/icons8-header-48.png" />';
                 richi_btn_hs.addEventListener('click', () => { this.#textAddOrRemoveTag(["H3"]) });
                 richi_header.appendChild(richi_btn_hs);
                 break;
@@ -108,40 +108,42 @@ class Richi {
                 break;
         }
 
-        if (this.#settings.modules.bold) {
+        if (this.#settings.components.bold) {
             //Button Bold
             const richi_btn_bold = document.createElement("BUTTON");
-            richi_btn_bold.id = "btn_strong";
-            richi_btn_bold.innerHTML = "B";
+            richi_btn_bold.id = "richi-btn-strong";
+            richi_btn_bold.innerHTML = '<img src="icons/icons8-bold-48.png" />';
             richi_btn_bold.addEventListener('click', () => { this.#textAddOrRemoveTag(["strong"]) });
             richi_header.appendChild(richi_btn_bold);
         }
 
 
-        if (this.#settings.modules.italic) {
+        if (this.#settings.components.italic) {
             //Button Italic
             const richi_btn_italic = document.createElement("BUTTON");
-            richi_btn_italic.id = "btn_i";
-            richi_btn_italic.innerHTML = "I";
+            richi_btn_italic.id = "richi-btn-i";
+            richi_btn_italic.innerHTML = '<img src="icons/icons8-italic-48.png"/>';
             richi_btn_italic.addEventListener('click', () => { this.#textAddOrRemoveTag(["i"]) });
             richi_header.appendChild(richi_btn_italic);
         }
 
 
-        if (this.#settings.modules.clear) {
+        if (this.#settings.components.clear) {
             //Button Remove Format
-            const richi_btn_remove = document.createElement("BUTTON");
-            richi_btn_remove.innerHTML = "Remove";
-            richi_btn_remove.addEventListener('click', () => { this.#textRemoveFormats(["strong", "i", "h1", "h2", "h3", "h4", "h5", "h6"]) });
-            richi_header.appendChild(richi_btn_remove);
+            const richi_btn_clear = document.createElement("BUTTON");
+            richi_btn_clear.id = 'richi-btn-clear';
+            richi_btn_clear.innerHTML = '<img src="icons/icons8-clear-formatting-48.png" />';
+            richi_btn_clear.addEventListener('click', () => { this.#textRemoveFormats(["strong", "i", "h1", "h2", "h3", "h4", "h5", "h6"]) });
+            richi_header.appendChild(richi_btn_clear);
         }
 
-        if (this.#settings.modules.html) {
+        if (this.#settings.components.code) {
             //Button HTML
-            const richi_btn_html = document.createElement("BUTTON");
-            richi_btn_html.innerHTML = "<>";
-            richi_btn_html.addEventListener('click', () => { this.#switchDisplay() });
-            richi_header.appendChild(richi_btn_html);
+            const richi_btn_code = document.createElement("BUTTON");
+            richi_btn_code.id = 'richi-btn-code';
+            richi_btn_code.innerHTML = '<img src="icons/icons8-source-code-48.png" />';
+            richi_btn_code.addEventListener('click', () => { this.#switchDisplay() });
+            richi_header.appendChild(richi_btn_code);
         }
 
 
@@ -231,7 +233,7 @@ class Richi {
     #getPath(el) {
         let path = [];
         let value = repeatPath(el);
-        value = value.map((i) => {return i.nodeName});
+        value = value.map((i) => { return i.nodeName });
         return [...new Set(value)];
 
         function repeatPath(el, i = 0) {
@@ -248,27 +250,7 @@ class Richi {
         }
     }
 
-    #checkTag(tag) {
-        const sel = window.getSelection();
-        let nodeList = [];
-        if (sel != 0 && tag != "") {
-            let range = sel.getRangeAt(0).cloneRange();
-            let rangeContent = range.cloneContents();
-            let richiTmp = document.createElement('richi-tmp');
-            richiTmp.appendChild(rangeContent);
-
-            let content = richiTmp.querySelectorAll(tag);
-            //console.log(content);
-            for (let node of [...content]) {
-                nodeList.push(node.tagName);
-            }
-            //console.log(nodeList);
-            //console.log(nodeList.includes(tag.toUpperCase()));
-        }
-        return this.#cursor_path.includes(tag.toUpperCase()) || nodeList.includes(tag.toUpperCase());
-    }
-
-    #checkTags(tag) {
+    #getTags(tag) {
         const sel = window.getSelection();
         let nodeList = [];
         if (sel != 0 && tag != "") {
@@ -294,6 +276,10 @@ class Richi {
         console.log(i);
         return nodeList.concat(i);
         //return cursor_path.includes(tag.toUpperCase()) || nodeList.includes(tag.toUpperCase());
+    }
+
+    #checkTag(tag) {
+        return this.#getTags(tag).includes(tag.toUpperCase());
     }
 
     #textAddOrRemoveTag(tag) {
@@ -399,64 +385,59 @@ class Richi {
         //console.log(tags);
         tags.forEach(item => {
             if (item.id) {
-                let tag = item.id.slice(4);
+                let tag = item.id.slice(10);
                 //console.log(item, tag);
                 if (this.#checkTag(tag)) {
-                    item.style = "font-weight: bold";
+                    item.style = "background-color: red";
                 } else {
-                    item.style = "font-weight: normal";
+                    item.style = "background-color: none";
                 }
             }
         })
 
-        let selected = [...header.getElementsByTagName("option")];
-        //console.log(selected);
-        let s_tags = [];
-        selected.forEach(item => {
-            //console.log(item.value);
-            if (item.value) {
-                if (this.#checkTags(item.value).includes(item.value)) {
-                    s_tags.push(item.value);
+        if (this.#settings.components.heading === "advanced") {
+            let selected = [...header.getElementsByTagName("option")];
+            //console.log(selected);
+            let s_tags = [];
+            selected.forEach(item => {
+                //console.log(item.value);
+                if (item.value) {
+                    if (this.#checkTag(item.value)) {
+                        s_tags.push(item.value);
+                    }
+                    //s_tags.push(checkTags(item.value))
                 }
-                //s_tags.push(checkTags(item.value))
+            })
+            //console.log(s_tags);
+            switch (s_tags.length) {
+                case 0:
+                    header.getElementsByTagName("select")[0].value = "Text";
+                    break;
+                case 1:
+                    header.getElementsByTagName("select")[0].value = s_tags[0];
+                    break;
+                default:
+                    header.getElementsByTagName("select")[0].value = "Empty";
+                    break;
             }
-        })
-        //console.log(s_tags);
-        switch (s_tags.length) {
-            case 0:
-                header.getElementsByTagName("select")[0].value = "Text";
-                break;
-            case 1:
-                header.getElementsByTagName("select")[0].value = s_tags[0];
-                break;
-            default:
-                header.getElementsByTagName("select")[0].value = "Empty";
-                break;
+            //cleanHeadings();
         }
-        //cleanHeadings();
+
     }
 
     //Function to get the value of The Richtext content
-    getRichiValue() {
+    getValue() {
         const el = document.getElementById(this.#id);
-        if (el && el.className.includes("richi")) {
+        if (el) {
             return el.getElementsByClassName("richi-text")[0].innerHTML;
         }
     }
 
     //Function to set the value of The Richtext content
-    setRichiValue(value) {
+    setValue(value) {
         const el = document.getElementById(this.#id);
-        if (el && element.className.includes("richi")) {
+        if (el) {
             el.getElementsByClassName("richi-text")[0].innerHTML = value;
         }
-    }
-}
-
-class RichiModule extends Richi {
-    constructor(name, type, value){
-        this.name = name;
-        this.type = type;
-        this.value = value;
     }
 }
