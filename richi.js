@@ -227,6 +227,27 @@ class Richi {
         //console.log(html);
     }
 
+    //return all nodes from selection or element
+    #getPath(el) {
+        let path = [];
+        let value = repeatPath(el);
+        value = value.map((i) => {return i.nodeName});
+        return [...new Set(value)];
+
+        function repeatPath(el, i = 0) {
+            //console.log(el);
+            path = path.concat(...el.childNodes);
+            let tmp = path.slice(i)
+            //console.log(tmp);
+            for (let p of tmp) {
+                if (p.childNodes.lengh !== 0) {
+                    repeatPath(p, path.length);
+                }
+            }
+            return path;
+        }
+    }
+
     #checkTag(tag) {
         const sel = window.getSelection();
         let nodeList = [];
