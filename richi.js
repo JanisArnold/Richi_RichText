@@ -42,21 +42,21 @@ class Richi {
         this.#cursor_path = [];
 
         this.#init();
-        this.test();
+        //this.test();
     }
 
-    test() {
+    /*test() {
         console.log(this);
-    }
+    }*/
 
     #init() {
-        console.log(this.#id);
+        //console.log(this.#id);
         const el = document.getElementById(this.#id);
-        console.log(el.innerHTML);
+        //console.log(el.innerHTML);
         this.#settings.placeholder = el.innerHTML || this.#settings.placeholder;
         el.innerHTML = null;
 
-        console.log(el);
+        //console.log(el);
         el.appendChild(this.#richiHeader());
         el.appendChild(this.#richiText());
         el.appendChild(this.#richiHTML());
@@ -71,7 +71,7 @@ class Richi {
                 //Button Heading
                 const richi_btn_hs = document.createElement("BUTTON");
                 richi_btn_hs.id = "richi-btn-h3";
-                richi_btn_hs.innerHTML = '<img src="icons/icons8-header-48.png" />';
+                richi_btn_hs.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAWklEQVRIiWNgGAVkgqMMDAz/GRgYDlOqlhGHpv9EqCFKLRMBzRSDUQuoYoEwmXIMDAzEpSJSwDBMRbjAfyQshEedMJpaDDCak0ctoJ0FR6A0MRUOKWpHASYAAC/LE38TKClKAAAAAElFTkSuQmCC"/>';
                 richi_btn_hs.addEventListener('click', () => { this.#textAddOrRemoveTag(["H3"]) });
                 richi_header.appendChild(richi_btn_hs);
                 break;
@@ -79,7 +79,7 @@ class Richi {
                 //Dropdown H1 - H6
                 const richi_btn_h = document.createElement("SELECT");
                 richi_btn_h.onchange = function () {
-                    console.log(this.value);
+                    //console.log(this.value);
                     this.#textAddOrRemoveTag([this.value])
                 };
 
@@ -112,7 +112,7 @@ class Richi {
             //Button Bold
             const richi_btn_bold = document.createElement("BUTTON");
             richi_btn_bold.id = "richi-btn-strong";
-            richi_btn_bold.innerHTML = '<img src="icons/icons8-bold-48.png" />';
+            richi_btn_bold.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAA5klEQVRIie3VsUoDQRRG4U8jWii2NtoINtHK2sTWxxIEC619BV/AyiZvoFjYqJ1phAhiJSISC+8QIpu4O9ntcuAyxf5zDzuzO8OcTI7Qx7CgvnGPY6zlCp4nNP9bd1jPEaQGRSyhi5vInNYtSOxF5rEpwUpkPqaFFnPswU6MLzmTy+zBbWROZhH8V1/YblIwxCsOcwWTaKGNq8gNsFWnILGAy8ieNyGA3cg+NSVYjuxb0cNZ/oPEfozvVSaVfYMWriN7UadgFR30jJZns4qg7HGdPtGDKs35vXCmST7xgDNsVG0+Z4wfqKFtvXOVZBUAAAAASUVORK5CYII="/>';
             richi_btn_bold.addEventListener('click', () => { this.#textAddOrRemoveTag(["strong"]) });
             richi_header.appendChild(richi_btn_bold);
         }
@@ -122,7 +122,7 @@ class Richi {
             //Button Italic
             const richi_btn_italic = document.createElement("BUTTON");
             richi_btn_italic.id = "richi-btn-i";
-            richi_btn_italic.innerHTML = '<img src="icons/icons8-italic-48.png"/>';
+            richi_btn_italic.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAmklEQVRIiWNgGAVUAkcZGBj+48CH8WlkItKCf3jk/hNpBlFAGWrgFwYGBkZiNBDrAxhQg9K3GIh0OakWqCJZQBQg14LbtLIAFkQ0t4DoICIFsDMwMPxhgESuEC0s0IYa/oYUTaQEEckpiFQLyAp/cnxAdAoi1QKSkyip4BkDJJINaGE4DwOkRP0HZVMNkF0PwAChOKBbPTCCAQA+oCd+eQtYhAAAAABJRU5ErkJggg=="/>';
             richi_btn_italic.addEventListener('click', () => { this.#textAddOrRemoveTag(["i"]) });
             richi_header.appendChild(richi_btn_italic);
         }
@@ -132,7 +132,7 @@ class Richi {
             //Button Remove Format
             const richi_btn_clear = document.createElement("BUTTON");
             richi_btn_clear.id = 'richi-btn-clear';
-            richi_btn_clear.innerHTML = '<img src="icons/icons8-clear-formatting-48.png" />';
+            richi_btn_clear.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABW0lEQVRIie3Uv05UQRTH8c9lLSRQmJhY2WIHiTEEaOmwtyMktHbwBPAArg2KLlRG/riJseUBCC9AQUUDNhYSWUMs12LPTcb17u69cEtOMsk9M7/5fe85Mxnuo0K8xHd07zgusVQEuKzBPB8XuWmWALp3qL4oMhir2fS/qAI4xzM8x4/bwEb1dTnRrpfQVwJcYRyP8BCP8acMoGyLPofhCl7hJ77iCHOYxAt8G2Yy7G+mQ3OK4/h+4t9bmMeGii06ifWFZG4q5jI08RvbaCSQ0oDVARVneNen/YIHA/SF5r8wMcC8FZobrOE68v2kkpGAj7H2OvLZyJuJ+WLMzY+CFAH28BRnkU+GthP5Wl9V7WTvQT+kzCM2E9oPkV/rHX6GrQJ9qyrgMLSNaEMOaQ/Qd1JA2ed6M4HsjdC+TQFLFSD5PR8G2VHTa93Apz7z3brMU8h7vfN4U7f50PgLf3DjpoE6xecAAAAASUVORK5CYII="/>';
             richi_btn_clear.addEventListener('click', () => { this.#textRemoveFormats(["strong", "i", "h1", "h2", "h3", "h4", "h5", "h6"]) });
             richi_header.appendChild(richi_btn_clear);
         }
@@ -141,7 +141,7 @@ class Richi {
             //Button HTML
             const richi_btn_code = document.createElement("BUTTON");
             richi_btn_code.id = 'richi-btn-code';
-            richi_btn_code.innerHTML = '<img src="icons/icons8-source-code-48.png" />';
+            richi_btn_code.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABH0lEQVRIie2UsU4CQRRFT4iU7A9o7JEa/wAspZBQaAUfYQmlrbSQQMM3GD+BykShsjPwAdgRTdbmTXbz8naYAem4yWY2795372TyZuCEf0YZeANmxwq4AlJgEdpQigy4lPXr0IBrIDHq57KuVT2RnqCAATAHng3uQtaVqg+lZ2CFaPMU+AFuDX4sfE/VW9KT+kKc+S9wX6B5FU3D4O5yIU/7mAMsRVct4M2QLtmxdDzmABvRWgPg0MmFdGPGNJFvA3wH9qTu55HsiB4KxDXRfHgM22S772tyV8iN8C/7mDvkx7SluJ5wY6MvaEx1yETV+57dTUPNHepARdVG2JcM0dZDzYvgLlkzpilmTN1Dp98hL84itO/AFviMCThhJ/4AR81RKde75vMAAAAASUVORK5CYII="/>';
             richi_btn_code.addEventListener('click', () => { this.#switchDisplay() });
             richi_header.appendChild(richi_btn_code);
         }
@@ -201,7 +201,7 @@ class Richi {
             this.#cursor_path.push(i.tagName);
         }
 
-        console.log(this.#cursor_path)
+        //console.log(this.#cursor_path)
         this.#updateNav();
     }
 
@@ -209,15 +209,20 @@ class Richi {
         const el = document.getElementById(this.#id);
         let text = el.getElementsByClassName("richi-text")[0];
         let html = el.getElementsByClassName("richi-html")[0];
+        let code = el.getElementsByClassName("richi-header")[0].querySelector("#richi-btn-code");
 
         if (html.style.display === "none") {
             html.style.display = "block";
             text.style.display = "none";
+            if (!code.classList.contains('active')) {
+                code.classList.add('active');
+            }
 
             html.value = text.innerHTML;
         } else {
             html.style.display = "none";
             text.style.display = "block";
+            code.classList.remove('active');
 
             if (!html.value) {
                 html.value = "<p><br></p>";
@@ -258,14 +263,14 @@ class Richi {
             let rangeContent = range.cloneContents();
             let richiTmp = document.createElement('richi-tmp');
             richiTmp.appendChild(rangeContent);
-            console.log(range);
+            //console.log(range);
 
             let content = richiTmp.querySelectorAll(tag);
-            console.log(content);
+            //console.log(content);
             for (let node of [...content]) {
                 nodeList.push(node.tagName);
             }
-            console.log(nodeList);
+            //console.log(nodeList);
             //console.log(nodeList.includes(tag.toUpperCase()));
         }
         //console.log(nodeList);
@@ -273,9 +278,8 @@ class Richi {
         let i = this.#cursor_path;
         i = i.filter(e => e !== 'DIV')
 
-        console.log(i);
+        //console.log(i);
         return nodeList.concat(i);
-        //return cursor_path.includes(tag.toUpperCase()) || nodeList.includes(tag.toUpperCase());
     }
 
     #checkTag(tag) {
@@ -308,7 +312,7 @@ class Richi {
     #textRemoveFormats(tags) {
         const el = document.getElementById(this.#id);
         const sel = window.getSelection();
-        console.log(sel);
+        //console.log(sel);
         if (sel != 0) {
             let range = sel.getRangeAt(0).cloneRange();
             let rangeContent = range.extractContents();
@@ -334,7 +338,7 @@ class Richi {
 
     #textRemoveTags(element, tags) {
         let content = element.getElementsByClassName("richi-text")[0];
-        console.log(tags);
+        //console.log(tags);
 
         tags.forEach(tag => {
             let contentText;
@@ -388,9 +392,12 @@ class Richi {
                 let tag = item.id.slice(10);
                 //console.log(item, tag);
                 if (this.#checkTag(tag)) {
-                    item.style = "background-color: red";
+                    if (!item.classList.contains('active')) {
+                        item.classList.add('active');
+                    }
                 } else {
-                    item.style = "background-color: none";
+                    item.classList.remove('active');
+                    //item.style = "background-color: none";
                 }
             }
         })
