@@ -40,11 +40,11 @@
     background-color: var(--c3);
 }
 
-.richi-header > .active{
+.richi-header > .richi-active{
     background-color: var(--c3);
 }
 
-.richi-header > #richi-btn-code{
+.richi-header > .richi-code{
     float: right;
 }
 

@@ -14,6 +14,7 @@ class Richi {
                 heading: 'simple',
                 bold: true,
                 italic: true,
+                underline: true,
                 clear: true,
                 code: true
             },
@@ -26,12 +27,14 @@ class Richi {
                 heading: 'simple',
                 bold: true,
                 italic: true,
+                underline: true,
                 clear: true,
                 code: true
             } : {
                 heading: [false, 'simple', 'advanced'].includes(settings.components.heading) ? settings.components.heading : 'simple',
                 bold: [true, false].includes(settings.components.bold) ? settings.components.bold : true,
                 italic: [true, false].includes(settings.components.italic) ? settings.components.italic : true,
+                underline: [true, false].includes(settings.components.underline) ? settings.components.underline : true,
                 clear: [true, false].includes(settings.components.clear) ? settings.components.clear : true,
                 code: [true, false].includes(settings.components.code) ? settings.components.code : true
             },
@@ -70,7 +73,8 @@ class Richi {
             case 'simple':
                 //Button Heading
                 const richi_btn_hs = document.createElement("BUTTON");
-                richi_btn_hs.id = "richi-btn-h3";
+                richi_btn_hs.className = "richi-h";
+                richi_btn_hs.dataset.richi = "h3";
                 richi_btn_hs.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAWklEQVRIiWNgGAVkgqMMDAz/GRgYDlOqlhGHpv9EqCFKLRMBzRSDUQuoYoEwmXIMDAzEpSJSwDBMRbjAfyQshEedMJpaDDCak0ctoJ0FR6A0MRUOKWpHASYAAC/LE38TKClKAAAAAElFTkSuQmCC"/>';
                 richi_btn_hs.addEventListener('click', () => { this.#textAddOrRemoveTag(["H3"]) });
                 richi_header.appendChild(richi_btn_hs);
@@ -111,7 +115,8 @@ class Richi {
         if (this.#settings.components.bold) {
             //Button Bold
             const richi_btn_bold = document.createElement("BUTTON");
-            richi_btn_bold.id = "richi-btn-strong";
+            richi_btn_bold.className = "richi-bold";
+            richi_btn_bold.dataset.richi = "strong";
             richi_btn_bold.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAA5klEQVRIie3VsUoDQRRG4U8jWii2NtoINtHK2sTWxxIEC619BV/AyiZvoFjYqJ1phAhiJSISC+8QIpu4O9ntcuAyxf5zDzuzO8OcTI7Qx7CgvnGPY6zlCp4nNP9bd1jPEaQGRSyhi5vInNYtSOxF5rEpwUpkPqaFFnPswU6MLzmTy+zBbWROZhH8V1/YblIwxCsOcwWTaKGNq8gNsFWnILGAy8ieNyGA3cg+NSVYjuxb0cNZ/oPEfozvVSaVfYMWriN7UadgFR30jJZns4qg7HGdPtGDKs35vXCmST7xgDNsVG0+Z4wfqKFtvXOVZBUAAAAASUVORK5CYII="/>';
             richi_btn_bold.addEventListener('click', () => { this.#textAddOrRemoveTag(["strong"]) });
             richi_header.appendChild(richi_btn_bold);
@@ -121,26 +126,37 @@ class Richi {
         if (this.#settings.components.italic) {
             //Button Italic
             const richi_btn_italic = document.createElement("BUTTON");
-            richi_btn_italic.id = "richi-btn-i";
+            richi_btn_italic.className = "richi-i";
+            richi_btn_italic.dataset.richi = "i";
             richi_btn_italic.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAmklEQVRIiWNgGAVUAkcZGBj+48CH8WlkItKCf3jk/hNpBlFAGWrgFwYGBkZiNBDrAxhQg9K3GIh0OakWqCJZQBQg14LbtLIAFkQ0t4DoICIFsDMwMPxhgESuEC0s0IYa/oYUTaQEEckpiFQLyAp/cnxAdAoi1QKSkyip4BkDJJINaGE4DwOkRP0HZVMNkF0PwAChOKBbPTCCAQA+oCd+eQtYhAAAAABJRU5ErkJggg=="/>';
             richi_btn_italic.addEventListener('click', () => { this.#textAddOrRemoveTag(["i"]) });
             richi_header.appendChild(richi_btn_italic);
+        }
+
+        if (this.#settings.components.underline) {
+            //Button Underline
+            const richi_btn_underline = document.createElement("BUTTON");
+            richi_btn_underline.className = "richi-u";
+            richi_btn_underline.dataset.richi = "u";
+            richi_btn_underline.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAqElEQVRIie2VQQqDMBBFH4W6a+u2vU5P0B5De8tiRZCuStFzuFcXGSGICWZcKX74zCKfvCEhGdiyCiCfkXuLg9WJF+UOGnKIdsAOWDmgkXryZC6jbBDgL/XuyQxrP0/GqRfmC6iAeGI9BmrJJBpABHwtyAM4i5/W5iVw1AAAbhZkyiVw1W4+KAJS4IO5zAbIMMei7nwbynCf/djOieZ7B21AM3Mm30rVA/IQL6bXqrypAAAAAElFTkSuQmCC"/>';
+            richi_btn_underline.addEventListener('click', () => { this.#textAddOrRemoveTag(["u"]) });
+            richi_header.appendChild(richi_btn_underline);
         }
 
 
         if (this.#settings.components.clear) {
             //Button Remove Format
             const richi_btn_clear = document.createElement("BUTTON");
-            richi_btn_clear.id = 'richi-btn-clear';
+            richi_btn_clear.className = 'richi-clear';
             richi_btn_clear.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABW0lEQVRIie3Uv05UQRTH8c9lLSRQmJhY2WIHiTEEaOmwtyMktHbwBPAArg2KLlRG/riJseUBCC9AQUUDNhYSWUMs12LPTcb17u69cEtOMsk9M7/5fe85Mxnuo0K8xHd07zgusVQEuKzBPB8XuWmWALp3qL4oMhir2fS/qAI4xzM8x4/bwEb1dTnRrpfQVwJcYRyP8BCP8acMoGyLPofhCl7hJ77iCHOYxAt8G2Yy7G+mQ3OK4/h+4t9bmMeGii06ifWFZG4q5jI08RvbaCSQ0oDVARVneNen/YIHA/SF5r8wMcC8FZobrOE68v2kkpGAj7H2OvLZyJuJ+WLMzY+CFAH28BRnkU+GthP5Wl9V7WTvQT+kzCM2E9oPkV/rHX6GrQJ9qyrgMLSNaEMOaQ/Qd1JA2ed6M4HsjdC+TQFLFSD5PR8G2VHTa93Apz7z3brMU8h7vfN4U7f50PgLf3DjpoE6xecAAAAASUVORK5CYII="/>';
-            richi_btn_clear.addEventListener('click', () => { this.#textRemoveFormats(["strong", "i", "h1", "h2", "h3", "h4", "h5", "h6"]) });
+            richi_btn_clear.addEventListener('click', () => { this.#textRemoveFormats(["strong", "i", "u", "h1", "h2", "h3", "h4", "h5", "h6"]) });
             richi_header.appendChild(richi_btn_clear);
         }
 
         if (this.#settings.components.code) {
             //Button HTML
             const richi_btn_code = document.createElement("BUTTON");
-            richi_btn_code.id = 'richi-btn-code';
+            richi_btn_code.className = 'richi-code';
             richi_btn_code.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABH0lEQVRIie2UsU4CQRRFT4iU7A9o7JEa/wAspZBQaAUfYQmlrbSQQMM3GD+BykShsjPwAdgRTdbmTXbz8naYAem4yWY2795372TyZuCEf0YZeANmxwq4AlJgEdpQigy4lPXr0IBrIDHq57KuVT2RnqCAATAHng3uQtaVqg+lZ2CFaPMU+AFuDX4sfE/VW9KT+kKc+S9wX6B5FU3D4O5yIU/7mAMsRVct4M2QLtmxdDzmABvRWgPg0MmFdGPGNJFvA3wH9qTu55HsiB4KxDXRfHgM22S772tyV8iN8C/7mDvkx7SluJ5wY6MvaEx1yETV+57dTUPNHepARdVG2JcM0dZDzYvgLlkzpilmTN1Dp98hL84itO/AFviMCThhJ/4AR81RKde75vMAAAAASUVORK5CYII="/>';
             richi_btn_code.addEventListener('click', () => { this.#switchDisplay() });
             richi_header.appendChild(richi_btn_code);
@@ -209,20 +225,20 @@ class Richi {
         const el = document.getElementById(this.#id);
         let text = el.getElementsByClassName("richi-text")[0];
         let html = el.getElementsByClassName("richi-html")[0];
-        let code = el.getElementsByClassName("richi-header")[0].querySelector("#richi-btn-code");
+        let code = el.getElementsByClassName("richi-header")[0].getElementsByClassName("richi-code")[0];
 
         if (html.style.display === "none") {
             html.style.display = "block";
             text.style.display = "none";
-            if (!code.classList.contains('active')) {
-                code.classList.add('active');
+            if (!code.classList.contains('richi-active')) {
+                code.classList.add('richi-active');
             }
 
             html.value = text.innerHTML;
         } else {
             html.style.display = "none";
             text.style.display = "block";
-            code.classList.remove('active');
+            code.classList.remove('richi-active');
 
             if (!html.value) {
                 html.value = "<p><br></p>";
@@ -388,15 +404,15 @@ class Richi {
         let tags = [...header.getElementsByTagName("button")];
         //console.log(tags);
         tags.forEach(item => {
-            if (item.id) {
-                let tag = item.id.slice(10);
+            if (item.dataset.richi) {
+                let tag = item.dataset.richi;
                 //console.log(item, tag);
                 if (this.#checkTag(tag)) {
-                    if (!item.classList.contains('active')) {
-                        item.classList.add('active');
+                    if (!item.classList.contains('richi-active')) {
+                        item.classList.add('richi-active');
                     }
                 } else {
-                    item.classList.remove('active');
+                    item.classList.remove('richi-active');
                     //item.style = "background-color: none";
                 }
             }
