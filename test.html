@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="test" style="width: 300px; height: 300px; border: 1px solid black;" contenteditable="">test</div>
+    <button onclick="test()">Test</button>
+
+    <script>
+        function test() {
+            console.log("test")
+            const sel1 = window.getSelection();
+
+            const sel = window.getSelection();
+            let range = sel.getRangeAt(0);
+            let cont = range.extractContents();
+            console.log(cont);
+            let el = document.createElement("b");
+            el.appendChild(cont);
+            range.insertNode(el);
+            
+        }
+    </script>
+</body>
+</html>

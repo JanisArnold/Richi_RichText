@@ -163,6 +163,15 @@ class Richi {
         }
 
 
+        //Button HTML
+        const richi_btn_test = document.createElement("BUTTON");
+        richi_btn_test.className = 'richi-test';
+        richi_btn_test.innerHTML = 'Test';
+        richi_btn_test.addEventListener('click', () => { this.#test() });
+        richi_header.appendChild(richi_btn_test);
+
+
+
         /*const richi_btn_update = document.createElement("BUTTON");
         richi_btn_update.innerHTML = "update";
         richi_btn_update.onclick = function() {
@@ -217,7 +226,7 @@ class Richi {
             this.#cursor_path.push(i.tagName);
         }
 
-        //console.log(this.#cursor_path)
+        console.log(this.#cursor_path);
         this.#updateNav();
     }
 
@@ -308,22 +317,117 @@ class Richi {
         const sel = window.getSelection();
         //console.log(check);
         if (sel != 0) {
-            let range = sel.getRangeAt(0).cloneRange();
+            //let range = sel.getRangeAt(0).cloneRange();
+            let range = sel.getRangeAt(0);
             let rangeContent = range.extractContents();
-            let richiTmp = document.createElement('richi-tmp');
+            //console.log(rangeContent);
+            //console.log(range.collapse(true));
+            //console.log(range);
+            //let richiTmp = document.createElement('richi-tmp');
 
-            richiTmp.appendChild(rangeContent);
-            range.insertNode(richiTmp);
+            //richiTmp.appendChild(rangeContent);
+            //range.insertNode(richiTmp);
 
             if (check) {
-                this.#textRemoveTags(el, tag);
-            } else {
-                this.#textAddTag(el, tag);
-            }
+                //this.#textRemoveTags(el, tag);
+                let node = document.createElement("richi-tmp");
+                node.appendChild(rangeContent);
+                range.insertNode(node);
+                //this.#textRemoveTags(el, tag);
+                //this.#setSel(tag);
 
-            this.#cleanCode(el, tag);
+
+                /*node.appendChild(rangeContent);
+                console.log(rangeContent);
+                rangeContent = "</"+tag+">" +node.innerHTML + "<"+tag+">";
+                //range.insertNode(rangeContent)
+                console.log(rangeContent);
+
+                let test = range.createContextualFragment(rangeContent);
+                console.log(test);
+                range.insertNode(test);*/
+
+            } else {
+                /*let node = document.createElement(tag);
+                node.appendChild(rangeContent);
+                console.log(rangeContent.innerText)
+                console.log(node.innerText);
+                range.insertNode(node);*/
+
+                let node = document.createElement("richi-tmp");
+                //let node2 = document.createElement(tag);
+                //node2.appendChild(rangeContent);
+                node.appendChild(rangeContent);
+                console.log(rangeContent);
+                range.insertNode(node);
+
+                //this.#textAddTag(el, tag);
+                //this.#setSel(tag);
+            }
         }
     }
+
+    #setSel(tag) {
+        //this function schout create a selection where the <richi-tmp> node is and remove the node
+        const el = document.getElementById(this.#id);
+        let text = el.getElementsByClassName("richi-text")[0];
+        //text.innerHTML = text.innerHTML.slice(3);
+        let node = text.getElementsByTagName("richi-tmp")[0];
+
+        let selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            selection.removeAllRanges();
+        }
+
+        console.log(node);
+        let range = document.createRange();
+        //range.setStart(node, 0);
+        selection.addRange(range);
+        this.#cleanCode(el, tag);
+
+        let content = node.innerHTML;
+        console.log(content);
+        let frag = range.createContextualFragment(content);
+        range.deleteContents();
+        range.insertNode(frag);
+        //console.log(range);
+
+    }
+
+    #test() {
+        //The new select function to slect all richi-tmp tags and remove them whitaout messing up the p tags
+        const el = document.getElementById(this.#id);
+        let text = el.getElementsByClassName("richi-text")[0];
+
+        let nodes = text.getElementsByTagName("richi-tmp");
+
+        let selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            selection.removeAllRanges();
+        }
+
+        console.log(nodes);
+        let range = document.createRange();
+
+        range.setStart(nodes[0], 0);
+        range.setEnd(nodes[nodes.length - 1], 1);
+        //selection.addRange(range);
+
+        for (let node of nodes) {
+            let range = document.createRange();
+            range.selectNode(node);
+            console.log(range);
+            let frag = range.createContextualFragment(node.innerHTML);
+            range.deleteContents();
+            range.insertNode(frag); 
+        }
+
+        selection.addRange(range);
+    }
+
+    //TO DO
+    //Create function which takes the inner html of everything and changes the richi-tmp- tags to each paragraph so the paragraphs stay as they are.
+    //Check before changing if tag is in selection then change the richi-tmp tags after every richi-tmp set or remove tags then delete richi-tmp tags and set selection with #test()
 
     #textRemoveFormats(tags) {
         const el = document.getElementById(this.#id);
