@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+
+<body>
+    <div style="margin: auto 20%;">
+        <div id="richi1">
+            <h2>Hallo Richi!</h2>
+            <p>Das ist nur <b>ein schneller</b> Test</p>
+        </div>
+    </div>
+    <br>
+    <div style="margin: auto 20%;">
+        <div id="richi2">
+            <h3>Titel</h3>
+            <p>Test Test Test<br>
+            Test test Test</p>
+            <p>Test <b>Test</b> Test</p>
+            <p>Mehr Testing</p>
+            <p>Noch mehr Testing</p>
+        </div>
+    </div>
+</body>
+
+<script src="richi.js"></script>
+<script>
+    let richi1 = new Richi("richi1", {
+        components: {
+            heading: 'advanced',
+            code: false
+        }
+    });
+
+    let richi2 = new Richi("richi2");
+
+    console.log(richi2.getValue());
+
+</script>
+
+</html>
