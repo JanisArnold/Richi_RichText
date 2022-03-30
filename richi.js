@@ -1,5 +1,5 @@
-const richi_start_tag = "<richi-tmp>";
-const richi_end_tag = "</richi-tmp>";
+//const richi_start_tag = "<richi-tmp>";
+//const richi_end_tag = "</richi-tmp>";
 
 class Richi {
     #id;
@@ -316,16 +316,35 @@ class Richi {
         if (this.#checkTag(tag)) {
             const sel = window.getSelection();
             let range = sel.getRangeAt(0);
+            let tmpNodes = [];
             let node = sel.anchorNode.parentNode;
 
-            console.log(sel);
+            if (sel.focusNode.parentNode.nodeName === tag.toUpperCase()) {
+                node = sel.focusNode.parentNode;
+            }
+            
+            [...sel.anchorNode.childNodes].forEach(node => {
+                node = node.nodeName;
+                tmpNodes.push(node);
+            });
+
+            if (tmpNodes.includes(tag.toUpperCase())) {
+                let i = tmpNodes.indexOf(tag.toUpperCase());
+                let nodes = [...sel.anchorNode.childNodes];
+                node = nodes[i];
+                //console.log("nein");
+            }
+
+            //console.log(range);
+
+            //console.log(sel);
             while(node.nodeName !== tag.toUpperCase()){
                 node = node.parentNode;
             }
 
             range.selectNode(node);
             
-            let frag = range.createContextualFragment(node.innerHTML);
+            let frag = range.createContextualFragment(node.innerHTML + "<br>");
             range.deleteContents();
             range.insertNode(frag);
             
@@ -339,9 +358,13 @@ class Richi {
                 node = node.parentNode;
             }
 
-            //let frag = range.createContextualFragment(node.innerHTML);
             console.log(node);
+
             range.selectNode(node);
+            //let frag = range.createContextualFragment(node.innerHTML);
+            //range.deleteContents();
+            //range.insertNode(frag);
+            //range.selectNode(node);
         }
     }
 
