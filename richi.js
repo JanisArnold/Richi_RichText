@@ -1,5 +1,3 @@
-//const richi_start_tag = "<richi-tmp>";
-//const richi_end_tag = "</richi-tmp>";
 class Richi {
     #id;
     #settings;
@@ -30,7 +28,7 @@ class Richi {
                 clear: true,
                 code: true
             } : {
-                heading: [false, 'simple', 'advanced'].includes(settings.components.heading) ? settings.components.heading : 'simple',
+                heading: [false, 'simple'/*,'advanced'*/].includes(settings.components.heading) ? settings.components.heading : 'simple',
                 bold: [true, false].includes(settings.components.bold) ? settings.components.bold : true,
                 italic: [true, false].includes(settings.components.italic) ? settings.components.italic : true,
                 underline: [true, false].includes(settings.components.underline) ? settings.components.underline : true,
@@ -44,17 +42,11 @@ class Richi {
         this.#cursor_path = [];
 
         this.#init();
-        //this.test();
     }
-
-    /*test() {
-        console.log(this);
-    }*/
 
     #init() {
         //console.log(this.#id);
         const el = document.getElementById(this.#id);
-        //console.log(el.innerHTML);
         this.#settings.placeholder = el.innerHTML.replace(/  +/g, '') || this.#settings.placeholder;
         el.innerHTML = null;
         el.classList.add("ri-th-"+this.#settings.theme);
@@ -83,7 +75,6 @@ class Richi {
             head.appendChild(link);
         }
 
-        //console.log(el);
         el.appendChild(this.#richiHeader());
         el.appendChild(this.#richiText());
         el.appendChild(this.#richiHTML());
@@ -103,12 +94,11 @@ class Richi {
                 richi_btn_hs.addEventListener('click', () => { this.#addOrRemoveHeading("h3") });
                 richi_header.appendChild(richi_btn_hs);
                 break;
-            case 'advanced':
+           /* case 'advanced':
                 //Dropdown H1 - H6
                 const richi_btn_h = document.createElement("SELECT");
                 richi_btn_h.onchange = function () {
                     //console.log(this.value);
-                    //this.#textAddOrRemoveTag([this.value])
                 };
 
                 let richi_btn_hEmpty = document.createElement("option");
@@ -133,7 +123,7 @@ class Richi {
                 richi_btn_h.appendChild(richi_btn_h2);
 
                 richi_header.appendChild(richi_btn_h);
-                break;
+                break;*/
         }
 
         if (this.#settings.components.bold) {
@@ -189,13 +179,6 @@ class Richi {
             richi_header.appendChild(richi_btn_code);
         }
 
-        /*const richi_btn_update = document.createElement("BUTTON");
-        richi_btn_update.innerHTML = "update";
-        richi_btn_update.onclick = function() {
-            update(this.parentNode.parentNode.id);
-        };
-        richi_header.appendChild(richi_btn_update);*/
-
         return richi_header;
     }
 
@@ -249,7 +232,6 @@ class Richi {
     }
 
     #autoResize(el, add = 0) {
-        //console.log(el.value == "");
         el.style.height = 'auto';
         el.style.height = el.scrollHeight + add + 2 + 'px';
     }
@@ -279,30 +261,7 @@ class Richi {
 
             text.innerHTML = html.value;
         }
-        //console.log(text);
-        //console.log(html);
     }
-
-    //return all nodes from selection or element
-    /*#getPath(el) {
-        let path = [];
-        let value = repeatPath(el);
-        value = value.map((i) => { return i.nodeName });
-        return [...new Set(value)];
-
-        function repeatPath(el, i = 0) {
-            //console.log(el);
-            path = path.concat(...el.childNodes);
-            let tmp = path.slice(i)
-            //console.log(tmp);
-            for (let p of tmp) {
-                if (p.childNodes.lengh !== 0) {
-                    repeatPath(p, path.length);
-                }
-            }
-            return path;
-        }
-    }*/
 
     #getTags(tag) {
         const sel = window.getSelection();
@@ -312,22 +271,15 @@ class Richi {
             let rangeContent = range.cloneContents();
             let richiTmp = document.createElement('richi-tmp');
             richiTmp.appendChild(rangeContent);
-            //console.log(range);
 
             let content = richiTmp.querySelectorAll(tag);
-            //console.log(content);
             for (let node of [...content]) {
                 nodeList.push(node.tagName);
             }
-            //console.log(nodeList);
-            //console.log(nodeList.includes(tag.toUpperCase()));
         }
-        //console.log(nodeList);
-        //console.log(cursor_path);
         let i = this.#cursor_path;
         i = i.filter(e => e !== 'DIV')
 
-        //console.log(i);
         return nodeList.concat(i);
     }
 
@@ -360,7 +312,6 @@ class Richi {
             }
 
             //console.log(range);
-
             //console.log(sel);
             while (node.nodeName !== tag.toUpperCase()) {
                 node = node.parentNode;
@@ -382,220 +333,40 @@ class Richi {
                 node = node.parentNode;
             }
 
-            console.log(node);
-
+            //console.log(node);
             range.selectNode(node);
-            //let frag = range.createContextualFragment(node.innerHTML);
-            //range.deleteContents();
-            //range.insertNode(frag);
-            //range.selectNode(node);
         }
     }
-
-    /*#textAddOrRemoveTag(tag) {
-        const el = document.getElementById(this.#id);
-        let check = this.#checkTag(tag[0]);
-        const sel = window.getSelection();
-        //console.log(check);
-        if (sel != 0) {
-            //let range = sel.getRangeAt(0).cloneRange();
-            let range = sel.getRangeAt(0);
-            let rangeContent = range.extractContents();
-            //console.log(rangeContent);
-            //console.log(range.collapse(true));
-            //console.log(range);
-            //let richiTmp = document.createElement('richi-tmp');
-
-            //richiTmp.appendChild(rangeContent);
-            //range.insertNode(richiTmp);
-
-            if (check) {
-                //this.#textRemoveTags(el, tag);
-                let node = document.createElement("richi-tmp");
-                node.appendChild(rangeContent);
-                range.insertNode(node);
-                //this.#textRemoveTags(el, tag);
-                //this.#setSel(tag);
-
-
-                /*node.appendChild(rangeContent);
-                console.log(rangeContent);
-                rangeContent = "</"+tag+">" +node.innerHTML + "<"+tag+">";
-                //range.insertNode(rangeContent)
-                console.log(rangeContent);
-
-                let test = range.createContextualFragment(rangeContent);
-                console.log(test);
-                range.insertNode(test);*/
-
-    //} else {
-    /*let node = document.createElement(tag);
-    node.appendChild(rangeContent);
-    console.log(rangeContent.innerText)
-    console.log(node.innerText);
-    range.insertNode(node);*/
-
-    /*let node = document.createElement("richi-tmp");
-    //let node2 = document.createElement(tag);
-    //node2.appendChild(rangeContent);
-    node.appendChild(rangeContent);
-    console.log(rangeContent);
-    range.insertNode(node);*/
-
-    //this.#textAddTag(el, tag);
-    //this.#setSel(tag);
-    // }
-    //}
-    //}
-
-    /*#setSel(tag) {
-        //this function schout create a selection where the <richi-tmp> node is and remove the node
-        const el = document.getElementById(this.#id);
-        let text = el.getElementsByClassName("richi-text")[0];
-        //text.innerHTML = text.innerHTML.slice(3);
-        let node = text.getElementsByTagName("richi-tmp")[0];
-
-        let selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            selection.removeAllRanges();
-        }
-
-        console.log(node);
-        let range = document.createRange();
-        //range.setStart(node, 0);
-        selection.addRange(range);
-        this.#cleanCode(el, tag);
-
-        let content = node.innerHTML;
-        console.log(content);
-        let frag = range.createContextualFragment(content);
-        range.deleteContents();
-        range.insertNode(frag);
-        //console.log(range);
-
-    }*/
-
-    /*#test() {
-        //The new select function to slect all richi-tmp tags and remove them whitaout messing up the p tags
-        const el = document.getElementById(this.#id);
-        let text = el.getElementsByClassName("richi-text")[0];
-
-        let nodes = text.getElementsByTagName("richi-tmp");
-
-        let selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            selection.removeAllRanges();
-        }
-
-        console.log(nodes);
-        let range = document.createRange();
-
-        range.setStart(nodes[0], 0);
-        range.setEnd(nodes[nodes.length - 1], 1);
-        //selection.addRange(range);
-
-        for (let node of nodes) {
-            let range = document.createRange();
-            range.selectNode(node);
-            console.log(range);
-            let frag = range.createContextualFragment(node.innerHTML);
-            range.deleteContents();
-            range.insertNode(frag);
-        }
-
-        selection.addRange(range);
-    }*/
-
-    /*#textAddTag(element, tag) {
-        let content = element.getElementsByClassName("richi-text")[0];
-        let tmpText = content.innerHTML;
-
-        tmpText = tmpText.replace(richi_start_tag, "<" + tag + ">");
-        tmpText = tmpText.replace(richi_end_tag, "</" + tag + ">");
-
-        content.innerHTML = tmpText;
-    }*/
-
-    /*#textRemoveTags(element, tags) {
-        let content = element.getElementsByClassName("richi-text")[0];
-        //console.log(tags);
-
-        tags.forEach(tag => {
-            let contentText;
-            let richiTmpBefore = content.innerHTML.slice(0, content.innerHTML.search(richi_start_tag));
-            let richiTmp = content.innerHTML.slice(content.innerHTML.search(richi_start_tag), content.innerHTML.search(richi_end_tag) + richi_end_tag.length);
-            let richiTmpAfter = content.innerHTML.slice(content.innerHTML.search(richi_end_tag) + richi_end_tag.length);
-
-            let tmp = content.innerHTML.slice(content.innerHTML.search(richi_end_tag));
-            let startTag = tmp.search("<" + tag + ">");
-            let endTag = tmp.search("</" + tag + ">");
-
-            if (startTag > endTag || (startTag === -1 && endTag > 0)) {
-                richiTmpAfter = "<" + tag + ">" + richiTmpAfter;
-            }
-
-            richiTmp = richiTmp.replace(new RegExp("<" + tag + ">", "g"), "");
-            richiTmp = richiTmp.replace(new RegExp("</" + tag + ">", "g"), "");
-
-            contentText = richiTmpBefore + "</" + tag + ">" + richiTmp + richiTmpAfter;
-
-            content.innerHTML = contentText;
-        });
-    }*/
-
-    /*#cleanCode(element, tags) {
-        const content = element.getElementsByClassName("richi-text")[0];
-        let text = content.innerHTML;
-
-        tags.forEach(tag => {
-            text = text.replace(new RegExp("</p><" + tag + "><p>", "g"), "<" + tag + ">");
-            text = text.replace(new RegExp("</p></" + tag + "><p>", "g"), "</" + tag + ">");
-            text = text.replace(new RegExp("<" + tag + "></" + tag + ">", "g"), "");
-        });
-
-        text = text.replace(new RegExp("</p>" + richi_start_tag + "<p>", "g"), "");
-        text = text.replace(new RegExp(richi_start_tag, "g"), "");
-        text = text.replace(new RegExp("</p>" + richi_end_tag + "<p>", "g"), "");
-        text = text.replace(new RegExp(richi_end_tag, "g"), "");
-
-        content.innerHTML = text;
-    }*/
 
     #updateNav() {
         const el = document.getElementById(this.#id);
         let header = el.getElementsByClassName("richi-header")[0];
-        //console.log(header.getElementsByTagName("button"));
         let tags = [...header.getElementsByTagName("button")];
-        //console.log(tags);
+
         tags.forEach(item => {
             if (item.dataset.richi) {
                 let tag = item.dataset.richi;
-                //console.log(item, tag);
                 if (this.#checkTag(tag)) {
                     if (!item.classList.contains('richi-active')) {
                         item.classList.add('richi-active');
                     }
                 } else {
                     item.classList.remove('richi-active');
-                    //item.style = "background-color: none";
                 }
             }
         })
 
         if (this.#settings.components.heading === "advanced") {
             let selected = [...header.getElementsByTagName("option")];
-            //console.log(selected);
             let s_tags = [];
             selected.forEach(item => {
-                //console.log(item.value);
                 if (item.value) {
                     if (this.#checkTag(item.value)) {
                         s_tags.push(item.value);
                     }
-                    //s_tags.push(checkTags(item.value))
                 }
             })
-            //console.log(s_tags);
+
             switch (s_tags.length) {
                 case 0:
                     header.getElementsByTagName("select")[0].value = "Text";
@@ -607,9 +378,7 @@ class Richi {
                     header.getElementsByTagName("select")[0].value = "Empty";
                     break;
             }
-            //cleanHeadings();
         }
-
     }
 
     //Function to get the value of The Richtext content
