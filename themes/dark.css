@@ -1,0 +1,10 @@
+.ri-th-dark {
+    --c1: #ffffff; /*Text color*/
+    --c2: #1e1e1e; /*Background color*/
+    --c3: #4c4c4c; /*details*/
+    --br: 10px; /*Border Radius*/
+}
+
+.ri-th-dark > .richi-header > button > img{
+    filter: invert(100%);
+}

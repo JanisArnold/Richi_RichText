@@ -1,28 +1,19 @@
-:root{
-    /*#373e40 for dark theme */
-    /*--c1: #40404F;
-    --c2: #f5f9e9;
-    --c3: #8d9f87;*/
-    --c1: #000000;
-    --c2: #ffffff;
-    --c3: #D6DBE0;
-    --br: 10px; /*Border Radius*/
-}
-
 .richi-header, .richi-text, .richi-html {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: var(--c2);
+    color: var(--c1);
 }
 
 .richi-header{
     gap: 5px;
-    border: 1px solid var(--c1);
+    border: 2px solid var(--c3);
     padding: 3px 5px;
     padding-bottom: 1px;
     border-radius: var(--br)  var(--br) 0 0;
 }
 
 .richi-text, .richi-html {
-    border: 1px solid var(--c1);
+    border: 2px solid var(--c3);
     border-top: none;
     border-radius: 0 0 var(--br) var(--br);
 }
@@ -52,7 +43,6 @@
     height: auto;
     min-height: 100px;
     padding: 5px;
-    /*display: inline-block;*/
 }
 
 .richi-html {

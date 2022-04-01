@@ -1,0 +1,14 @@
+.ri-th-janis {
+    --c1: #000000; /*Text color*/
+    --c2: #ffffff; /*Background color*/
+    --c3: #384D48; /*details*/
+    --br: 10px; /*Border Radius*/
+}
+
+.ri-th-janis > .richi-header > .richi-active > img{
+    filter: invert(100%);
+}
+
+.ri-th-janis > .richi-header > button:hover > img{
+    filter: invert(100%);
+}

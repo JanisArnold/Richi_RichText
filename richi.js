@@ -1,6 +1,5 @@
 //const richi_start_tag = "<richi-tmp>";
 //const richi_end_tag = "</richi-tmp>";
-
 class Richi {
     #id;
     #settings;
@@ -20,7 +19,7 @@ class Richi {
             },
             placeholder: '<p>Richi Richtext...</p>',
             //readOnly: settings.readonly || false,
-            //theme: settings.theme || 'default'
+            theme: 'default'
         } : {
             //debug: [true, false].includes(settings.debug) ? settings.debug : false,
             components: (settings.components === undefined) ? {
@@ -40,7 +39,7 @@ class Richi {
             },
             placeholder: settings.placeholder || '<p>Richi Richtext...</p>',
             //readOnly: settings.readonly || false,
-            //theme: settings.theme || 'default'
+            theme: ["default", 'dark', 'janis'].includes(settings.theme) ? settings.theme : 'default',
         }
         this.#cursor_path = [];
 
@@ -58,15 +57,29 @@ class Richi {
         //console.log(el.innerHTML);
         this.#settings.placeholder = el.innerHTML.replace(/  +/g, '') || this.#settings.placeholder;
         el.innerHTML = null;
+        el.classList.add("ri-th-"+this.#settings.theme);
 
-        let richiCSS = 'richiCSS';  // you could encode the css path itself to generate id..
+        let richiCSS = 'richiCSS';
         if (!document.getElementById(richiCSS)) {
             let head = document.getElementsByTagName('head')[0];
             let link = document.createElement('link');
             link.id = richiCSS;
             link.rel = 'stylesheet';
             link.type = 'text/css';
-            link.href = 'richi.css';
+            link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText/richi.css';
+            //link.href = 'richi.css';
+            head.appendChild(link);
+        }
+
+        let richiTheme = 'richiTheme_'+this.#settings.theme;
+        if (!document.getElementById(richiTheme)) {
+            let head = document.getElementsByTagName('head')[0];
+            let link = document.createElement('link');
+            link.id = richiTheme;
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText/themes/'+this.#settings.theme+'.css';
+            //link.href = 'themes/'+this.#settings.theme+'.css';
             head.appendChild(link);
         }
 

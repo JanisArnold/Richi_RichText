@@ -1,0 +1,9 @@
+.ri-th-default {
+    --c1: #000000; /*Text color*/
+    --c2: #ffffff; /*Background color*/
+    --c3: #D6DBE0; /*details*/
+    --br: 10px; /*Border Radius*/
+
+    /*border-radius: var(--br);
+    box-shadow: 0 0 0.25em 0.25em var(--c3);*/
+}
