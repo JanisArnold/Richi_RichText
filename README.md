@@ -22,7 +22,7 @@ To use Richi you have to use the code below:
 It's possible to customize Richi
 
 ```javascript
-///create Richi whith the given ID from the container and custom settings
+///create Richi with the given ID from the container and custom settings
 let richi = new Richi("richi", {
   components: {
     //the default value is 'simple', on false it disappears in the toolbar
