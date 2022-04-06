@@ -12,6 +12,7 @@ class Richi {
                 bold: true,
                 italic: true,
                 underline: true,
+                link: true,
                 clear: true,
                 code: true
             },
@@ -25,6 +26,7 @@ class Richi {
                 bold: true,
                 italic: true,
                 underline: true,
+                link: true,
                 clear: true,
                 code: true
             } : {
@@ -32,6 +34,7 @@ class Richi {
                 bold: [true, false].includes(settings.components.bold) ? settings.components.bold : true,
                 italic: [true, false].includes(settings.components.italic) ? settings.components.italic : true,
                 underline: [true, false].includes(settings.components.underline) ? settings.components.underline : true,
+                link: [true, false].includes(settings.components.link) ? settings.components.link : true,
                 clear: [true, false].includes(settings.components.clear) ? settings.components.clear : true,
                 code: [true, false].includes(settings.components.code) ? settings.components.code : true
             },
@@ -49,7 +52,8 @@ class Richi {
         const el = document.getElementById(this.#id);
         this.#settings.placeholder = el.innerHTML.replace(/  +/g, '') || this.#settings.placeholder;
         el.innerHTML = null;
-        el.classList.add("ri-th-"+this.#settings.theme);
+        el.classList.add("richi");
+        el.classList.add("ri-th-" + this.#settings.theme);
 
         let richiCSS = 'richiCSS';
         if (!document.getElementById(richiCSS)) {
@@ -58,25 +62,26 @@ class Richi {
             link.id = richiCSS;
             link.rel = 'stylesheet';
             link.type = 'text/css';
-            link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText/richi.css';
-            //link.href = 'richi.css';
+            //link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText@latest/richi.css';
+            link.href = 'richi.css';
             head.appendChild(link);
         }
 
-        let richiTheme = 'richiTheme_'+this.#settings.theme;
+        let richiTheme = 'richiTheme_' + this.#settings.theme;
         if (!document.getElementById(richiTheme)) {
             let head = document.getElementsByTagName('head')[0];
             let link = document.createElement('link');
             link.id = richiTheme;
             link.rel = 'stylesheet';
             link.type = 'text/css';
-            link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText/themes/'+this.#settings.theme+'.css';
-            //link.href = 'themes/'+this.#settings.theme+'.css';
+            //link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText@latest/themes/' + this.#settings.theme + '.css';
+            link.href = 'themes/' + this.#settings.theme + '.css';
             head.appendChild(link);
         }
 
         el.appendChild(this.#richiHeader());
         el.appendChild(this.#richiText());
+        el.appendChild(this.#richiLink());
         el.appendChild(this.#richiHTML());
     }
 
@@ -94,36 +99,36 @@ class Richi {
                 richi_btn_hs.addEventListener('click', () => { this.#addOrRemoveHeading("h3") });
                 richi_header.appendChild(richi_btn_hs);
                 break;
-           /* case 'advanced':
-                //Dropdown H1 - H6
-                const richi_btn_h = document.createElement("SELECT");
-                richi_btn_h.onchange = function () {
-                    //console.log(this.value);
-                };
-
-                let richi_btn_hEmpty = document.createElement("option");
-                richi_btn_hEmpty.value = "Empty";
-                richi_btn_hEmpty.style.display = "none";
-                richi_btn_h.appendChild(richi_btn_hEmpty);
-
-                let richi_btn_hText = document.createElement("option");
-                richi_btn_hText.value = "P";
-                richi_btn_hText.innerText = "Text";
-                richi_btn_hText.selected = true;
-                richi_btn_h.appendChild(richi_btn_hText);
-
-                let richi_btn_h1 = document.createElement("option");
-                richi_btn_h1.value = "H1";
-                richi_btn_h1.innerText = "Heading 1";
-                richi_btn_h.appendChild(richi_btn_h1);
-
-                let richi_btn_h2 = document.createElement("option");
-                richi_btn_h2.value = "H2";
-                richi_btn_h2.innerText = "Heading 2";
-                richi_btn_h.appendChild(richi_btn_h2);
-
-                richi_header.appendChild(richi_btn_h);
-                break;*/
+            /* case 'advanced':
+                 //Dropdown H1 - H6
+                 const richi_btn_h = document.createElement("SELECT");
+                 richi_btn_h.onchange = function () {
+                     //console.log(this.value);
+                 };
+ 
+                 let richi_btn_hEmpty = document.createElement("option");
+                 richi_btn_hEmpty.value = "Empty";
+                 richi_btn_hEmpty.style.display = "none";
+                 richi_btn_h.appendChild(richi_btn_hEmpty);
+ 
+                 let richi_btn_hText = document.createElement("option");
+                 richi_btn_hText.value = "P";
+                 richi_btn_hText.innerText = "Text";
+                 richi_btn_hText.selected = true;
+                 richi_btn_h.appendChild(richi_btn_hText);
+ 
+                 let richi_btn_h1 = document.createElement("option");
+                 richi_btn_h1.value = "H1";
+                 richi_btn_h1.innerText = "Heading 1";
+                 richi_btn_h.appendChild(richi_btn_h1);
+ 
+                 let richi_btn_h2 = document.createElement("option");
+                 richi_btn_h2.value = "H2";
+                 richi_btn_h2.innerText = "Heading 2";
+                 richi_btn_h.appendChild(richi_btn_h2);
+ 
+                 richi_header.appendChild(richi_btn_h);
+                 break;*/
         }
 
         if (this.#settings.components.bold) {
@@ -157,6 +162,15 @@ class Richi {
             richi_header.appendChild(richi_btn_underline);
         }
 
+        if (this.#settings.components.link) {
+            //Button Remove Format
+            const richi_btn_link = document.createElement("BUTTON");
+            richi_btn_link.className = 'richi-link';
+            richi_btn_link.dataset.richi = "a";
+            richi_btn_link.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAzElEQVRIie2TMQrCQBBFHx4jabyItoqC3kZjkyaC59FaRQweR8FgEwiJxY6wDJu4WinsgyHw989nd4ZAIPB3zIADUACNVbnDe1GeG7ADhm3hG9Vg19nhz1u8NZBo81wOS2ABRN0PddIHMqCSrJF9eBJx+UWwJpWsvS0+RIyVWc/ZVXo/kegFQE/ERn1f1B431j06E4CjCKlH4DtWOEY0FrEC1piFfUos4aVkTbQhwYzEZ87QvZ+s7RYDYAtcVYPPf3DHjGXa/dBA4Od4Ah34WosKz1B5AAAAAElFTkSuQmCC"/>';
+            richi_btn_link.addEventListener('click', () => { this.#addOrUpdateLink() });
+            richi_header.appendChild(richi_btn_link);
+        }
 
         if (this.#settings.components.clear) {
             //Button Remove Format
@@ -198,7 +212,23 @@ class Richi {
         richi_text.addEventListener('keyup', () => this.#cursorMove());
         richi_text.addEventListener('click', () => this.#cursorMove());
 
+        richi_text.addEventListener('click', () => {
+            let linkBox = document.getElementById(this.#id).getElementsByClassName("richi-box-link")[0];
+            linkBox.style.display = "none";
+        });
+
         return richi_text;
+    }
+
+    #richiLink() {
+        let richi_link = document.createElement("div");
+        richi_link.className = "richi-box-link";
+        richi_link.style.display = "none";
+
+        let richi_link_input = document.createElement("input");
+        richi_link.appendChild(richi_link_input);
+
+        return richi_link;
     }
 
     #richiHTML() {
@@ -221,11 +251,11 @@ class Richi {
             node = node.parentNode;
         } while (path[path.length - 1] !== el);
 
-        this.#cursor_path = [];
+        this.#cursor_path = path;
 
-        for (let i of path) {
+        /*for (let i of path) {
             this.#cursor_path.push(i.tagName);
-        }
+        }*/
 
         console.log(this.#cursor_path);
         this.#updateNav();
@@ -262,29 +292,88 @@ class Richi {
             text.innerHTML = html.value;
         }
     }
-
-    #getTags(tag) {
+    #getNodes(tag) {
         const sel = window.getSelection();
-        let nodeList = [];
+
+        let list = [];
         if (sel != 0 && tag != "") {
             let range = sel.getRangeAt(0).cloneRange();
             let rangeContent = range.cloneContents();
-            let richiTmp = document.createElement('richi-tmp');
-            richiTmp.appendChild(rangeContent);
 
-            let content = richiTmp.querySelectorAll(tag);
-            for (let node of [...content]) {
-                nodeList.push(node.tagName);
-            }
+            list = rangeContent.querySelectorAll(tag);
         }
-        let i = this.#cursor_path;
-        i = i.filter(e => e !== 'DIV')
+        return [...list].concat([...this.#cursor_path]);
+    }
 
-        return nodeList.concat(i);
+    #getTags(tag) {
+        let nodeList = this.#getNodes(tag);
+        let tagList = [];
+
+        for (let node of [...nodeList]) {
+            tagList.push(node.tagName);
+        }
+
+        tagList = tagList.filter(e => e !== 'DIV')
+
+        console.log(tagList);
+        return tagList;
     }
 
     #checkTag(tag) {
         return this.#getTags(tag).includes(tag.toUpperCase());
+    }
+
+    #getFullNodes() {
+        function nextNode(node) {
+            if (node.hasChildNodes()) {
+                return node.firstChild;
+            } else {
+                while (node && !node.nextSibling) {
+                    node = node.parentNode;
+                }
+                if (!node) {
+                    return null;
+                }
+                return node.nextSibling;
+            }
+        }
+
+        function getRangeSelectedNodes(range) {
+            let node = range.startContainer;
+            let endNode = range.endContainer;
+
+            // Special case for a range that is contained within a single node
+            if (node == endNode) {
+                return [node];
+            }
+
+            // Iterate nodes until we hit the end container
+            let rangeNodes = [];
+            while (node && node != endNode) {
+                rangeNodes.push(node = nextNode(node));
+            }
+
+            // Add partially selected nodes at the start of the range
+            node = range.startContainer;
+            while (node && node != range.commonAncestorContainer) {
+                rangeNodes.unshift(node);
+                node = node.parentNode;
+            }
+
+            return rangeNodes;
+        }
+
+        function getSelectedNodes() {
+            if (window.getSelection) {
+                let sel = window.getSelection();
+                if (!sel.isCollapsed) {
+                    return getRangeSelectedNodes(sel.getRangeAt(0));
+                }
+            }
+            return [];
+        }
+
+        return getSelectedNodes();
     }
 
     #addOrRemoveHeading(tag) {
@@ -336,6 +425,59 @@ class Richi {
             //console.log(node);
             range.selectNode(node);
         }
+    }
+
+    #addOrUpdateLink() {
+        const sel = window.getSelection();
+        let linkBox = document.getElementById(this.#id).getElementsByClassName("richi-box-link")[0];
+        let range = sel.getRangeAt(0);
+        let nodes = this.#getFullNodes();
+        let node = this.#cursor_path.find(n => n.nodeName === "A");
+
+        if (!node) {
+            node = nodes.find(n => n.nodeName === "A");
+        }
+        console.log(node);
+
+        if (node) {
+            range.selectNode(node);
+            console.log(node.getAttribute("href"));
+            let pos = node.getBoundingClientRect();
+            console.log(pos);
+
+            linkBox.style.display = "block";
+            linkBox.style.left = pos.left + "px";
+            linkBox.style.top = pos.top + pos.height + "px";
+            console.log(linkBox)
+
+        }
+
+
+
+
+        /*let nodeI = this.#getTags("a").indexOf("A");
+        if (nodeI >= 0) {
+            node = this.#getNodes("a")[nodeI];
+            console.log(node);
+        }
+        if (node) {
+            range.selectNode(node);
+        }*/
+
+
+
+        /*if (this.#checkTag("a")) {
+            range.selectNode()
+            sel.focusNode(node);
+        }*/
+
+        //let url = prompt("Please enter your link", link);
+
+        //document.execCommand('createLink', true, url);
+
+        //selection.anchorNode.parentElement.target = '_blank';
+
+
     }
 
     #updateNav() {

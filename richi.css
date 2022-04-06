@@ -1,4 +1,5 @@
-.richi-header, .richi-text, .richi-html {
+.richi{
+    /*position: relative;*/
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: var(--c2);
     color: var(--c1);
@@ -43,6 +44,14 @@
     height: auto;
     min-height: 100px;
     padding: 5px;
+}
+
+.richi-box-link{
+    position: absolute;
+    height: 50px;
+    width: 100px;
+    background-color: red;
+    top: 0;
 }
 
 .richi-html {
