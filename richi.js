@@ -2,6 +2,7 @@ class Richi {
     #id;
     #settings;
     #cursor_path;
+    #tmpRange;
 
     constructor(id, settings) {
         this.#id = id;
@@ -168,7 +169,7 @@ class Richi {
             richi_btn_link.className = 'richi-link';
             richi_btn_link.dataset.richi = "a";
             richi_btn_link.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAzElEQVRIie2TMQrCQBBFHx4jabyItoqC3kZjkyaC59FaRQweR8FgEwiJxY6wDJu4WinsgyHw989nd4ZAIPB3zIADUACNVbnDe1GeG7ADhm3hG9Vg19nhz1u8NZBo81wOS2ABRN0PddIHMqCSrJF9eBJx+UWwJpWsvS0+RIyVWc/ZVXo/kegFQE/ERn1f1B431j06E4CjCKlH4DtWOEY0FrEC1piFfUos4aVkTbQhwYzEZ87QvZ+s7RYDYAtcVYPPf3DHjGXa/dBA4Od4Ah34WosKz1B5AAAAAElFTkSuQmCC"/>';
-            richi_btn_link.addEventListener('click', () => { this.#addOrUpdateLink() });
+            richi_btn_link.addEventListener('click', () => { this.#showLinkBox() });
             richi_header.appendChild(richi_btn_link);
         }
 
@@ -225,8 +226,51 @@ class Richi {
         richi_link.className = "richi-box-link";
         richi_link.style.display = "none";
 
+        let richi_link_setting_box = document.createElement("div");
+        richi_link_setting_box.className = "richi-link-setting";
+        richi_link_setting_box.style.display = "none";
+
+        let richi_link_setting_tab_label = document.createElement("label");
+        richi_link_setting_tab_label.innerText = "open in new tab";
+
+        let richi_link_setting_tab = document.createElement("input");
+        richi_link_setting_tab.type = "checkbox";
+        richi_link_setting_tab_label.appendChild(richi_link_setting_tab);
+
+        
+        richi_link_setting_box.appendChild(richi_link_setting_tab_label);
+
+        richi_link.appendChild(richi_link_setting_box);
+
+        let richi_link_setting = document.createElement("button");
+        richi_link_setting.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABP0lEQVRIieXVvUoDQRQF4E/tEg34U9oLsdWglYWF2olB7dTWwryElYWVoJ2+ge+QN1Bs0gUUQcQySWksdoNxmVkjiYV44MLO7LnnzM6dO8t/wRZa6KbRwuYgieMDGuyj2DcupnMjwSKaPlffiybK3yWPBcYXmMMt1nAc4PXQxRXq2MEbTtL5II4CK/1pHMbEJ/E8AoMXlEIGtZykR1QxlcY2Gjn8WshgFe2I+EyAP52+y/LbWIltUwWdTEI1RsZuhttJNXLR31BdyZbEUMpwW1nCoI0WQ+z4Rg0qgbn1nPyNgF50i2JFbkgKmsUsngL8L0XuX+0yCgGhBdxLClpKYw93mA/wC7Gv+PVGI2nzYQ0O+gUnMgYPkouuiVO8Ykn8tLzjEufpcx1nci67EMqGuK4HxU3A4HpU4gzxy/z7+ABsuKy+qDOyAQAAAABJRU5ErkJggg=="/>';
+        richi_link_setting.addEventListener("click", () => {
+            this.#toggleLinkSetting(richi_link_setting, richi_link_setting_box);
+        })
+        richi_link.appendChild(richi_link_setting);
+
         let richi_link_input = document.createElement("input");
+        richi_link_input.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                richi_link_save.click();
+            }
+        });
         richi_link.appendChild(richi_link_input);
+
+        let richi_link_save = document.createElement("button");
+        richi_link_save.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAbUlEQVRIie2SMQqAMAxF3yUUvf9JnERaFzt4HB3aocQWB1MokgdZQnh8wgfD6IkR2IGllTwAF7BpywfgSPITmEzev3wFPLEZkrwtoXLziqsIVOTwfMFc2H3+uUyrklySp27SFohpXRq15MbPuAEcIC00f9uqxwAAAABJRU5ErkJggg=="/>';
+        richi_link_save.addEventListener("click", () => {
+            this.#addOrUpdateLink();
+        })
+        richi_link.appendChild(richi_link_save);
+
+        let richi_link_remove = document.createElement("button");
+        richi_link_remove.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAq0lEQVRIieWVUQqCQBCGvzpND9s98kbmU4/eK7rE+qZBsN6heplgGVfUQaXshwH5Hf5v1hGFf9EFeKkqrWG3RNjYuuqwfQLwtE4mkI1p1+Nbj9rJS+1gVn0FwAMF0EZeC+RAZQXH73YungOClBOvUL0mQBzo1HWYA/CBHKP7B+CR6Oto8SX3adVHtPiSPXBW0wbx/BBgu5+KuyGrmdKcATXj/2Q1cDIM9QN6A0KVZNfyr7QUAAAAAElFTkSuQmCC"/>';
+        richi_link_remove.addEventListener("click", () => {
+            this.#removeLink();
+        })
+        richi_link.appendChild(richi_link_remove);
 
         return richi_link;
     }
@@ -292,6 +336,7 @@ class Richi {
             text.innerHTML = html.value;
         }
     }
+
     #getNodes(tag) {
         const sel = window.getSelection();
 
@@ -427,9 +472,13 @@ class Richi {
         }
     }
 
-    #addOrUpdateLink() {
+    #showLinkBox() {
         const sel = window.getSelection();
         let linkBox = document.getElementById(this.#id).getElementsByClassName("richi-box-link")[0];
+        let linkInput = linkBox.getElementsByTagName("input")[1];
+        let linkCheckBox = linkBox.getElementsByTagName("input")[0];
+        linkInput.value = "";
+
         let range = sel.getRangeAt(0);
         let nodes = this.#getFullNodes();
         let node = this.#cursor_path.find(n => n.nodeName === "A");
@@ -437,47 +486,77 @@ class Richi {
         if (!node) {
             node = nodes.find(n => n.nodeName === "A");
         }
-        console.log(node);
+        //console.log(node);
 
         if (node) {
             range.selectNode(node);
-            console.log(node.getAttribute("href"));
-            let pos = node.getBoundingClientRect();
-            console.log(pos);
-
-            linkBox.style.display = "block";
-            linkBox.style.left = pos.left + "px";
-            linkBox.style.top = pos.top + pos.height + "px";
-            console.log(linkBox)
-
+            linkInput.value = node.getAttribute("href");
+            if (node.target === "_blank") {
+                linkCheckBox.checked = true;
+            }
         }
 
+        let pos = range.getBoundingClientRect();
+        //console.log(pos);
 
+        linkBox.style.display = "flex";
+        linkBox.style.left = pos.left + "px";
+        linkBox.style.top = pos.top + pos.height + "px";
+        //console.log(linkBox)
+        this.#tmpRange = range;
+    }
 
+    #addOrUpdateLink() {
+        const sel = document.getSelection()
+        sel.removeAllRanges();
+        sel.addRange(this.#tmpRange);
 
-        /*let nodeI = this.#getTags("a").indexOf("A");
-        if (nodeI >= 0) {
-            node = this.#getNodes("a")[nodeI];
-            console.log(node);
+        //console.log(sel);
+        let linkBox = document.getElementById(this.#id).getElementsByClassName("richi-box-link")[0];
+        let linkInput = linkBox.getElementsByTagName("input")[1];
+        let linkCheckBox = linkBox.getElementsByTagName("input")[0];
+
+        let selChilds = sel.anchorNode.childNodes;
+        let node = [...selChilds].find(n => n.nodeName === "A");
+
+        if (linkInput.value) {
+            if (node) {
+                node.href = linkInput.value;
+                if (linkCheckBox.checked === true) {
+                    node.target = "_blank";
+                }else{
+                    node.removeAttribute("target");
+                }
+            }
+            else {
+                document.execCommand('createLink', false, linkInput.value);
+                if (linkCheckBox.checked === true) {
+                    sel.anchorNode.parentElement.target = '_blank';
+                }
+            }
+        } else {
+            this.#removeLink();
         }
-        if (node) {
-            range.selectNode(node);
-        }*/
+        linkBox.style.display = "none";
+    }
 
+    #removeLink() {
+        const sel = document.getSelection()
+        let linkBox = document.getElementById(this.#id).getElementsByClassName("richi-box-link")[0];
+        sel.removeAllRanges();
+        sel.addRange(this.#tmpRange);
+        document.execCommand('unLink');
+        linkBox.style.display = "none";
+    }
 
-
-        /*if (this.#checkTag("a")) {
-            range.selectNode()
-            sel.focusNode(node);
-        }*/
-
-        //let url = prompt("Please enter your link", link);
-
-        //document.execCommand('createLink', true, url);
-
-        //selection.anchorNode.parentElement.target = '_blank';
-
-
+    #toggleLinkSetting(btn, box) {
+        if (box.style.display === "none") {
+            box.style.display = "flex";
+            btn.classList.add('richi-active');
+        } else {
+            box.style.display = "none";
+            btn.classList.remove('richi-active');
+        }
     }
 
     #updateNav() {

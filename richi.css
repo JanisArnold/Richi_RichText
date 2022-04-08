@@ -19,7 +19,7 @@
     border-radius: 0 0 var(--br) var(--br);
 }
 
-.richi-header > button{
+.richi-header > button, .richi-box-link > button{
     padding: 2px;
     padding-bottom: 0;
     margin: 0 3px;
@@ -28,11 +28,11 @@
     border-radius: 4px;
 }
 
-.richi-header > button:hover{
+.richi-header > button:hover, .richi-box-link > button:hover{
     background-color: var(--c3);
 }
 
-.richi-header > .richi-active{
+.richi-header > .richi-active, .richi-box-link > .richi-active{
     background-color: var(--c3);
 }
 
@@ -48,10 +48,32 @@
 
 .richi-box-link{
     position: absolute;
-    height: 50px;
-    width: 100px;
-    background-color: red;
-    top: 0;
+    background-color: var(--c2);
+    border: 2px solid var(--c3);
+    border-radius: var(--br);
+    overflow: hidden;
+}
+
+.richi-box-link > button{
+    margin: 0;
+    padding: 0 2px;
+    padding-top: 1px;
+}
+
+.richi-box-link > input{
+    border: 0 ;
+    border-right: 2px solid var(--c3);
+    border-left: 2px solid var(--c3);
+    background-color: var(--c2);
+    color: var(--c1);
+}
+
+.richi-link-setting{
+    position: absolute;
+    width: -webkit-fill-available;
+    background-color: var(--c2);
+    height: 100%;
+    margin-left: 30px;
 }
 
 .richi-html {
@@ -61,7 +83,7 @@
     box-sizing: border-box;
 }
 
-.richi-html:focus {
+.richi-html:focus, .richi-box-link > input {
     outline: none;
 }
 

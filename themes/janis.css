@@ -9,6 +9,6 @@
     filter: invert(100%);
 }
 
-.ri-th-janis > .richi-header > button:hover > img{
+.ri-th-janis > .richi-header > button:hover > img, .ri-th-janis > .richi-box-link > button:hover > img{
     filter: invert(100%);
 }
