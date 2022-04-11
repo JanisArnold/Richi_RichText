@@ -49,7 +49,6 @@ class Richi {
     }
 
     #init() {
-        //console.log(this.#id);
         const el = document.getElementById(this.#id);
         this.#settings.placeholder = el.innerHTML.replace(/  +/g, '') || this.#settings.placeholder;
         el.innerHTML = null;
@@ -63,8 +62,8 @@ class Richi {
             link.id = richiCSS;
             link.rel = 'stylesheet';
             link.type = 'text/css';
-            //link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText@latest/richi.css';
-            link.href = 'richi.css';
+            link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText@latest/richi.css';
+            //link.href = 'richi.css';
             head.appendChild(link);
         }
 
@@ -75,8 +74,8 @@ class Richi {
             link.id = richiTheme;
             link.rel = 'stylesheet';
             link.type = 'text/css';
-            //link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText@latest/themes/' + this.#settings.theme + '.css';
-            link.href = 'themes/' + this.#settings.theme + '.css';
+            link.href = 'https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText@latest/themes/' + this.#settings.theme + '.css';
+            //link.href = 'themes/' + this.#settings.theme + '.css';
             head.appendChild(link);
         }
 
@@ -295,8 +294,6 @@ class Richi {
         } while (path[path.length - 1] !== el);
 
         this.#cursor_path = path;
-
-        //console.log(this.#cursor_path);
         this.#updateNav();
     }
 
@@ -395,12 +392,9 @@ class Richi {
     }
 
     #addOrRemoveHeading(tag) {
-        //console.log(tag);
         const sel = window.getSelection();
         let range = sel.getRangeAt(0);
-        //let nodes = this.#getFullNodes();
         let node = this.#checkTag(tag);
-        //console.log(node);
 
         if (node) {
             range.selectNode(node);
@@ -410,11 +404,9 @@ class Richi {
             }else{
                 frag = range.createContextualFragment(node.innerHTML + "<br>");
             }
-            //console.log(frag);
             range.deleteContents();
             range.insertNode(frag);
 
-            //console.log(this.#getFullNodes());
         }else{
             document.execCommand("formatBlock", false, "<h3>");
             range = sel.getRangeAt(0);
@@ -434,7 +426,6 @@ class Richi {
         let linkSetting = linkBox.getElementsByClassName("richi-link-setting")[0];
         let linkInput = linkBox.getElementsByTagName("input")[1];
         let linkCheckBox = linkSetting.getElementsByTagName("input")[0];
-        //console.log(linkInput);
         linkSetting.style.display = "none";
         linkInput.value = "";
 
@@ -450,12 +441,10 @@ class Richi {
         }
 
         let pos = range.getBoundingClientRect();
-        //console.log(pos);
 
         linkBox.style.display = "flex";
         linkBox.style.left = pos.left + "px";
         linkBox.style.top = pos.top + pos.height + "px";
-        //console.log(linkBox)
         this.#tmpRange = range;
     }
 
@@ -464,7 +453,6 @@ class Richi {
         sel.removeAllRanges();
         sel.addRange(this.#tmpRange);
 
-        //console.log(sel);
         let linkBox = document.getElementById(this.#id).getElementsByClassName("richi-box-link")[0];
         let linkInput = linkBox.getElementsByTagName("input")[1];
         let linkCheckBox = linkBox.getElementsByTagName("input")[0];

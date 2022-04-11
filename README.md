@@ -31,6 +31,7 @@ let richi = new Richi("richi", {
     bold: true, //possible values: true, false
     italic: true, //possible values: true, false
     underline: true, //possible values: true, false
+    link: true, //possible values: true, false
     clear: true, //possible values: true, false
     code: true //possible values: true, false
   },
