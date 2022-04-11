@@ -5,10 +5,10 @@
     --br: 10px; /*Border Radius*/
 }
 
-.ri-th-janis > .richi-header > .richi-active > img{
+.ri-th-janis > .richi-header > .richi-active > img, .ri-th-janis > .richi-box-link > .richi-active > img{
     filter: invert(100%);
 }
 
-.ri-th-janis > .richi-header > button:hover > img{
+.ri-th-janis > .richi-header > button:hover > img, .ri-th-janis > .richi-box-link > button:hover > img{
     filter: invert(100%);
 }

@@ -5,6 +5,6 @@
     --br: 10px; /*Border Radius*/
 }
 
-.ri-th-dark > .richi-header > button > img{
+.ri-th-dark > .richi-header > button > img, .ri-th-dark > .richi-box-link > button > img{
     filter: invert(100%);
 }

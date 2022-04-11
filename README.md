@@ -1,5 +1,4 @@
 # Richi
-
 ## Quickstart
 To use Richi you have to use the code below:
 
@@ -40,9 +39,6 @@ let richi = new Richi("richi", {
 });
 ```
 
-used Icons:
+Used Icons: 
 
-https://icons8.com/icon/set/editing/material-rounded
-
-https://icons8.com/icon/set/programming/material-rounded
-
+https://icons8.com/icon/set/free-icons/material-rounded
