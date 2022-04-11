@@ -138,7 +138,7 @@ class Richi {
             richi_btn_bold.className = "richi-bold";
             richi_btn_bold.dataset.richi = "b";
             richi_btn_bold.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAA5klEQVRIie3VsUoDQRRG4U8jWii2NtoINtHK2sTWxxIEC619BV/AyiZvoFjYqJ1phAhiJSISC+8QIpu4O9ntcuAyxf5zDzuzO8OcTI7Qx7CgvnGPY6zlCp4nNP9bd1jPEaQGRSyhi5vInNYtSOxF5rEpwUpkPqaFFnPswU6MLzmTy+zBbWROZhH8V1/YblIwxCsOcwWTaKGNq8gNsFWnILGAy8ieNyGA3cg+NSVYjuxb0cNZ/oPEfozvVSaVfYMWriN7UadgFR30jJZns4qg7HGdPtGDKs35vXCmST7xgDNsVG0+Z4wfqKFtvXOVZBUAAAAASUVORK5CYII="/>';
-            richi_btn_bold.addEventListener('click', () => { document.execCommand("bold") });
+            richi_btn_bold.addEventListener('click', () => { this.#useCommand("bold") });
             richi_header.appendChild(richi_btn_bold);
         }
 
@@ -149,7 +149,7 @@ class Richi {
             richi_btn_italic.className = "richi-i";
             richi_btn_italic.dataset.richi = "i";
             richi_btn_italic.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAmklEQVRIiWNgGAVUAkcZGBj+48CH8WlkItKCf3jk/hNpBlFAGWrgFwYGBkZiNBDrAxhQg9K3GIh0OakWqCJZQBQg14LbtLIAFkQ0t4DoICIFsDMwMPxhgESuEC0s0IYa/oYUTaQEEckpiFQLyAp/cnxAdAoi1QKSkyip4BkDJJINaGE4DwOkRP0HZVMNkF0PwAChOKBbPTCCAQA+oCd+eQtYhAAAAABJRU5ErkJggg=="/>';
-            richi_btn_italic.addEventListener('click', () => { document.execCommand("italic") });
+            richi_btn_italic.addEventListener('click', () => { this.#useCommand("italic") });
             richi_header.appendChild(richi_btn_italic);
         }
 
@@ -159,7 +159,7 @@ class Richi {
             richi_btn_underline.className = "richi-u";
             richi_btn_underline.dataset.richi = "u";
             richi_btn_underline.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAqElEQVRIie2VQQqDMBBFH4W6a+u2vU5P0B5De8tiRZCuStFzuFcXGSGICWZcKX74zCKfvCEhGdiyCiCfkXuLg9WJF+UOGnKIdsAOWDmgkXryZC6jbBDgL/XuyQxrP0/GqRfmC6iAeGI9BmrJJBpABHwtyAM4i5/W5iVw1AAAbhZkyiVw1W4+KAJS4IO5zAbIMMei7nwbynCf/djOieZ7B21AM3Mm30rVA/IQL6bXqrypAAAAAElFTkSuQmCC"/>';
-            richi_btn_underline.addEventListener('click', () => { document.execCommand("underline") });
+            richi_btn_underline.addEventListener('click', () => { this.#useCommand("underline") });
             richi_header.appendChild(richi_btn_underline);
         }
 
@@ -178,7 +178,7 @@ class Richi {
             const richi_btn_clear = document.createElement("BUTTON");
             richi_btn_clear.className = 'richi-clear';
             richi_btn_clear.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABW0lEQVRIie3Uv05UQRTH8c9lLSRQmJhY2WIHiTEEaOmwtyMktHbwBPAArg2KLlRG/riJseUBCC9AQUUDNhYSWUMs12LPTcb17u69cEtOMsk9M7/5fe85Mxnuo0K8xHd07zgusVQEuKzBPB8XuWmWALp3qL4oMhir2fS/qAI4xzM8x4/bwEb1dTnRrpfQVwJcYRyP8BCP8acMoGyLPofhCl7hJ77iCHOYxAt8G2Yy7G+mQ3OK4/h+4t9bmMeGii06ifWFZG4q5jI08RvbaCSQ0oDVARVneNen/YIHA/SF5r8wMcC8FZobrOE68v2kkpGAj7H2OvLZyJuJ+WLMzY+CFAH28BRnkU+GthP5Wl9V7WTvQT+kzCM2E9oPkV/rHX6GrQJ9qyrgMLSNaEMOaQ/Qd1JA2ed6M4HsjdC+TQFLFSD5PR8G2VHTa93Apz7z3brMU8h7vfN4U7f50PgLf3DjpoE6xecAAAAASUVORK5CYII="/>';
-            richi_btn_clear.addEventListener('click', () => { document.execCommand("removeFormat") });
+            richi_btn_clear.addEventListener('click', () => { this.#useCommand("removeFormat") });
             richi_header.appendChild(richi_btn_clear);
         }
 
@@ -231,12 +231,11 @@ class Richi {
         richi_link_setting_box.style.display = "none";
 
         let richi_link_setting_tab_label = document.createElement("label");
-        richi_link_setting_tab_label.innerText = "open in new tab";
+        richi_link_setting_tab_label.innerText = "Open in a new tab";
 
         let richi_link_setting_tab = document.createElement("input");
         richi_link_setting_tab.type = "checkbox";
         richi_link_setting_tab_label.appendChild(richi_link_setting_tab);
-
         
         richi_link_setting_box.appendChild(richi_link_setting_tab_label);
 
@@ -297,11 +296,7 @@ class Richi {
 
         this.#cursor_path = path;
 
-        /*for (let i of path) {
-            this.#cursor_path.push(i.tagName);
-        }*/
-
-        console.log(this.#cursor_path);
+        //console.log(this.#cursor_path);
         this.#updateNav();
     }
 
@@ -337,35 +332,8 @@ class Richi {
         }
     }
 
-    #getNodes(tag) {
-        const sel = window.getSelection();
-
-        let list = [];
-        if (sel != 0 && tag != "") {
-            let range = sel.getRangeAt(0).cloneRange();
-            let rangeContent = range.cloneContents();
-
-            list = rangeContent.querySelectorAll(tag);
-        }
-        return [...list].concat([...this.#cursor_path]);
-    }
-
-    #getTags(tag) {
-        let nodeList = this.#getNodes(tag);
-        let tagList = [];
-
-        for (let node of [...nodeList]) {
-            tagList.push(node.tagName);
-        }
-
-        tagList = tagList.filter(e => e !== 'DIV')
-
-        console.log(tagList);
-        return tagList;
-    }
-
     #checkTag(tag) {
-        return this.#getTags(tag).includes(tag.toUpperCase());
+        return this.#cursor_path.find(n => n.nodeName === tag.toUpperCase()) || this.#getFullNodes().find(n => n.nodeName === tag.toUpperCase());
     }
 
     #getFullNodes() {
@@ -421,75 +389,60 @@ class Richi {
         return getSelectedNodes();
     }
 
+    #useCommand(cmd){
+        document.execCommand(cmd);
+        this.#cursorMove();
+    }
+
     #addOrRemoveHeading(tag) {
-        console.log(tag);
-        if (this.#checkTag(tag)) {
-            const sel = window.getSelection();
-            let range = sel.getRangeAt(0);
-            let tmpNodes = [];
-            let node = sel.anchorNode.parentNode;
+        //console.log(tag);
+        const sel = window.getSelection();
+        let range = sel.getRangeAt(0);
+        //let nodes = this.#getFullNodes();
+        let node = this.#checkTag(tag);
+        //console.log(node);
 
-            if (sel.focusNode.parentNode.nodeName === tag.toUpperCase()) {
-                node = sel.focusNode.parentNode;
-            }
-
-            [...sel.anchorNode.childNodes].forEach(node => {
-                node = node.nodeName;
-                tmpNodes.push(node);
-            });
-
-            if (tmpNodes.includes(tag.toUpperCase())) {
-                let i = tmpNodes.indexOf(tag.toUpperCase());
-                let nodes = [...sel.anchorNode.childNodes];
-                node = nodes[i];
-                //console.log("nein");
-            }
-
-            //console.log(range);
-            //console.log(sel);
-            while (node.nodeName !== tag.toUpperCase()) {
-                node = node.parentNode;
-            }
-
+        if (node) {
             range.selectNode(node);
-
-            let frag = range.createContextualFragment(node.innerHTML + "<br>");
+            let frag;
+            if (node.parentNode.nodeName === "DIV") {
+                frag = range.createContextualFragment("<p>" + node.innerHTML + "</p>");
+            }else{
+                frag = range.createContextualFragment(node.innerHTML + "<br>");
+            }
+            //console.log(frag);
             range.deleteContents();
             range.insertNode(frag);
 
-        } else {
+            //console.log(this.#getFullNodes());
+        }else{
             document.execCommand("formatBlock", false, "<h3>");
-            const sel = window.getSelection();
-            let range = sel.getRangeAt(0);
-            let node = sel.anchorNode.parentNode;
-
-            while (node.nodeName !== tag.toUpperCase()) {
-                node = node.parentNode;
+            range = sel.getRangeAt(0);
+            let pNode = sel.anchorNode.parentNode;
+            
+            while (pNode.nodeName !== tag.toUpperCase()) {
+                pNode = pNode.parentNode;
             }
-
-            //console.log(node);
-            range.selectNode(node);
+            range.selectNodeContents(pNode);
+            this.#cursorMove();
         }
     }
 
     #showLinkBox() {
         const sel = window.getSelection();
         let linkBox = document.getElementById(this.#id).getElementsByClassName("richi-box-link")[0];
+        let linkSetting = linkBox.getElementsByClassName("richi-link-setting")[0];
         let linkInput = linkBox.getElementsByTagName("input")[1];
-        let linkCheckBox = linkBox.getElementsByTagName("input")[0];
+        let linkCheckBox = linkSetting.getElementsByTagName("input")[0];
+        //console.log(linkInput);
+        linkSetting.style.display = "none";
         linkInput.value = "";
 
         let range = sel.getRangeAt(0);
-        let nodes = this.#getFullNodes();
-        let node = this.#cursor_path.find(n => n.nodeName === "A");
-
-        if (!node) {
-            node = nodes.find(n => n.nodeName === "A");
-        }
-        //console.log(node);
+        let node = this.#checkTag("A");
 
         if (node) {
-            range.selectNode(node);
+            range.selectNodeContents(node);
             linkInput.value = node.getAttribute("href");
             if (node.target === "_blank") {
                 linkCheckBox.checked = true;
@@ -538,6 +491,7 @@ class Richi {
             this.#removeLink();
         }
         linkBox.style.display = "none";
+        this.#cursorMove();
     }
 
     #removeLink() {
@@ -551,7 +505,7 @@ class Richi {
 
     #toggleLinkSetting(btn, box) {
         if (box.style.display === "none") {
-            box.style.display = "flex";
+            box.style.display = "block";
             btn.classList.add('richi-active');
         } else {
             box.style.display = "none";
@@ -577,7 +531,7 @@ class Richi {
             }
         })
 
-        if (this.#settings.components.heading === "advanced") {
+        /*if (this.#settings.components.heading === "advanced") {
             let selected = [...header.getElementsByTagName("option")];
             let s_tags = [];
             selected.forEach(item => {
@@ -599,7 +553,7 @@ class Richi {
                     header.getElementsByTagName("select")[0].value = "Empty";
                     break;
             }
-        }
+        }*/
     }
 
     //Function to get the value of The Richtext content
