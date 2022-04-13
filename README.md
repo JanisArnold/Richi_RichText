@@ -8,10 +8,10 @@ To use Richi you have to use the code below:
   <p>Some Text</p> 
 </div>
 
-<!--add the script tag whitch the Richi script-->
+<!--add the script tag with the Richi script-->
 <script src="https://cdn.jsdelivr.net/gh/janis-5/Richi_RichText@0.2.1/richi.js"></script>
 
-<!--create Richi whith the given ID from the container-->
+<!--create Richi with the given ID from the container-->
 <script>
   let richi = new Richi("richi");
 </script>
