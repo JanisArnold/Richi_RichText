@@ -14,6 +14,7 @@ class Richi {
                 italic: true,
                 underline: true,
                 link: true,
+                uList: true,
                 clear: true,
                 code: true
             },
@@ -28,6 +29,7 @@ class Richi {
                 italic: true,
                 underline: true,
                 link: true,
+                uList: true,
                 clear: true,
                 code: true
             } : {
@@ -36,6 +38,7 @@ class Richi {
                 italic: [true, false].includes(settings.components.italic) ? settings.components.italic : true,
                 underline: [true, false].includes(settings.components.underline) ? settings.components.underline : true,
                 link: [true, false].includes(settings.components.link) ? settings.components.link : true,
+                uList: [true, false].includes(settings.components.uList) ? settings.components.uList : true,
                 clear: [true, false].includes(settings.components.clear) ? settings.components.clear : true,
                 code: [true, false].includes(settings.components.code) ? settings.components.code : true
             },
@@ -173,6 +176,16 @@ class Richi {
             richi_header.appendChild(richi_btn_link);
         }
 
+        if (this.#settings.components.uList) {
+            //Button unorderd list
+            const richi_btn_uList = document.createElement("BUTTON");
+            richi_btn_uList.className = 'richi-link';
+            richi_btn_uList.dataset.richi = "ul";
+            richi_btn_uList.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAASElEQVR4nGNgGAWDBTAxMDDEQDEjLSyIYWBg+A/F0Ujih5HEScGHaW3BIXQLGKEGR9EqiIY+YBpNRQyjqYhSMJqK/o+mohEMAGVga2jJTerWAAAAAElFTkSuQmCC">';
+            richi_btn_uList.addEventListener('click', () => { this.#useCommand("insertUnorderedList") });
+            richi_header.appendChild(richi_btn_uList);
+        }
+
         if (this.#settings.components.clear) {
             //Button Remove Format
             const richi_btn_clear = document.createElement("BUTTON");
@@ -236,7 +249,7 @@ class Richi {
         let richi_link_setting_tab = document.createElement("input");
         richi_link_setting_tab.type = "checkbox";
         richi_link_setting_tab_label.appendChild(richi_link_setting_tab);
-        
+
         richi_link_setting_box.appendChild(richi_link_setting_tab_label);
 
         richi_link.appendChild(richi_link_setting_box);
@@ -389,7 +402,7 @@ class Richi {
         return getSelectedNodes();
     }
 
-    #useCommand(cmd){
+    #useCommand(cmd) {
         document.execCommand(cmd);
         this.#cursorMove();
     }
@@ -407,7 +420,7 @@ class Richi {
             let frag;
             if (node.parentNode.nodeName === "DIV") {
                 frag = range.createContextualFragment("<p>" + node.innerHTML + "</p>");
-            }else{
+            } else {
                 frag = range.createContextualFragment(node.innerHTML + "<br>");
             }
             //console.log(frag);
@@ -415,11 +428,11 @@ class Richi {
             range.insertNode(frag);
 
             //console.log(this.#getFullNodes());
-        }else{
+        } else {
             document.execCommand("formatBlock", false, "<h3>");
             range = sel.getRangeAt(0);
             let pNode = sel.anchorNode.parentNode;
-            
+
             while (pNode.nodeName !== tag.toUpperCase()) {
                 pNode = pNode.parentNode;
             }
@@ -477,7 +490,7 @@ class Richi {
                 node.href = linkInput.value;
                 if (linkCheckBox.checked === true) {
                     node.target = "_blank";
-                }else{
+                } else {
                     node.removeAttribute("target");
                 }
             }
