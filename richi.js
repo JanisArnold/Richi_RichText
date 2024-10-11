@@ -4,7 +4,7 @@ class Richi {
     #cursor_path;
     #tmpRange;
 
-    constructor(id, settings) {
+    /*constructor(id, settings) {
         this.#id = id;
         this.#settings = (settings === undefined) ? {
             //debug: false,
@@ -31,7 +31,7 @@ class Richi {
                 clear: true,
                 code: true
             } : {
-                heading: [false, 'simple'/*,'advanced'*/].includes(settings.components.heading) ? settings.components.heading : 'simple',
+                heading: [false, 'simple','advanced'].includes(settings.components.heading) ? settings.components.heading : 'simple',
                 bold: [true, false].includes(settings.components.bold) ? settings.components.bold : true,
                 italic: [true, false].includes(settings.components.italic) ? settings.components.italic : true,
                 underline: [true, false].includes(settings.components.underline) ? settings.components.underline : true,
@@ -43,6 +43,28 @@ class Richi {
             //readOnly: settings.readonly || false,
             theme: ["default", 'dark', 'janis'].includes(settings.theme) ? settings.theme : 'default',
         }
+        this.#cursor_path = [];
+
+        this.#init();
+    }*/
+
+    constructor(id, settings = {
+        debug: false,
+        components: {
+            heading: 'simple',
+            bold: true,
+            italic: true,
+            underline: true,
+            link: true,
+            clear: true,
+            code: true
+        },
+        placeholder: '<p>Richi Richtext...</p>',
+        //readOnly: settings.readonly || false,
+        theme: 'default'
+    }) {
+        this.#id = id;
+        this.#settings = settings;
         this.#cursor_path = [];
 
         this.#init();
@@ -106,28 +128,28 @@ class Richi {
                  richi_btn_h.onchange = function () {
                      //console.log(this.value);
                  };
- 
+     
                  let richi_btn_hEmpty = document.createElement("option");
                  richi_btn_hEmpty.value = "Empty";
                  richi_btn_hEmpty.style.display = "none";
                  richi_btn_h.appendChild(richi_btn_hEmpty);
- 
+     
                  let richi_btn_hText = document.createElement("option");
                  richi_btn_hText.value = "P";
                  richi_btn_hText.innerText = "Text";
                  richi_btn_hText.selected = true;
                  richi_btn_h.appendChild(richi_btn_hText);
- 
+     
                  let richi_btn_h1 = document.createElement("option");
                  richi_btn_h1.value = "H1";
                  richi_btn_h1.innerText = "Heading 1";
                  richi_btn_h.appendChild(richi_btn_h1);
- 
+     
                  let richi_btn_h2 = document.createElement("option");
                  richi_btn_h2.value = "H2";
                  richi_btn_h2.innerText = "Heading 2";
                  richi_btn_h.appendChild(richi_btn_h2);
- 
+     
                  richi_header.appendChild(richi_btn_h);
                  break;*/
         }
@@ -236,7 +258,7 @@ class Richi {
         let richi_link_setting_tab = document.createElement("input");
         richi_link_setting_tab.type = "checkbox";
         richi_link_setting_tab_label.appendChild(richi_link_setting_tab);
-        
+
         richi_link_setting_box.appendChild(richi_link_setting_tab_label);
 
         richi_link.appendChild(richi_link_setting_box);
@@ -389,7 +411,7 @@ class Richi {
         return getSelectedNodes();
     }
 
-    #useCommand(cmd){
+    #useCommand(cmd) {
         document.execCommand(cmd);
         this.#cursorMove();
     }
@@ -407,7 +429,7 @@ class Richi {
             let frag;
             if (node.parentNode.nodeName === "DIV") {
                 frag = range.createContextualFragment("<p>" + node.innerHTML + "</p>");
-            }else{
+            } else {
                 frag = range.createContextualFragment(node.innerHTML + "<br>");
             }
             //console.log(frag);
@@ -415,11 +437,11 @@ class Richi {
             range.insertNode(frag);
 
             //console.log(this.#getFullNodes());
-        }else{
+        } else {
             document.execCommand("formatBlock", false, "<h3>");
             range = sel.getRangeAt(0);
             let pNode = sel.anchorNode.parentNode;
-            
+
             while (pNode.nodeName !== tag.toUpperCase()) {
                 pNode = pNode.parentNode;
             }
@@ -477,7 +499,7 @@ class Richi {
                 node.href = linkInput.value;
                 if (linkCheckBox.checked === true) {
                     node.target = "_blank";
-                }else{
+                } else {
                     node.removeAttribute("target");
                 }
             }
@@ -541,7 +563,7 @@ class Richi {
                     }
                 }
             })
-
+    
             switch (s_tags.length) {
                 case 0:
                     header.getElementsByTagName("select")[0].value = "Text";
