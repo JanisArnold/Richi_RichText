@@ -14,6 +14,7 @@ class Richi {
                 italic: true,
                 underline: true,
                 link: true,
+                uList: true,
                 clear: true,
                 code: true
             },
@@ -28,6 +29,7 @@ class Richi {
                 italic: true,
                 underline: true,
                 link: true,
+                uList: true,
                 clear: true,
                 code: true
             } : {
@@ -36,6 +38,7 @@ class Richi {
                 italic: [true, false].includes(settings.components.italic) ? settings.components.italic : true,
                 underline: [true, false].includes(settings.components.underline) ? settings.components.underline : true,
                 link: [true, false].includes(settings.components.link) ? settings.components.link : true,
+                uList: [true, false].includes(settings.components.uList) ? settings.components.uList : true,
                 clear: [true, false].includes(settings.components.clear) ? settings.components.clear : true,
                 code: [true, false].includes(settings.components.code) ? settings.components.code : true
             },
@@ -193,6 +196,16 @@ class Richi {
             richi_btn_link.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAzElEQVRIie2TMQrCQBBFHx4jabyItoqC3kZjkyaC59FaRQweR8FgEwiJxY6wDJu4WinsgyHw989nd4ZAIPB3zIADUACNVbnDe1GeG7ADhm3hG9Vg19nhz1u8NZBo81wOS2ABRN0PddIHMqCSrJF9eBJx+UWwJpWsvS0+RIyVWc/ZVXo/kegFQE/ERn1f1B431j06E4CjCKlH4DtWOEY0FrEC1piFfUos4aVkTbQhwYzEZ87QvZ+s7RYDYAtcVYPPf3DHjGXa/dBA4Od4Ah34WosKz1B5AAAAAElFTkSuQmCC"/>';
             richi_btn_link.addEventListener('click', () => { this.#showLinkBox() });
             richi_header.appendChild(richi_btn_link);
+        }
+
+        if (this.#settings.components.uList) {
+            //Button unorderd list
+            const richi_btn_uList = document.createElement("BUTTON");
+            richi_btn_uList.className = 'richi-link';
+            richi_btn_uList.dataset.richi = "ul";
+            richi_btn_uList.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAASElEQVR4nGNgGAWDBTAxMDDEQDEjLSyIYWBg+A/F0Ujih5HEScGHaW3BIXQLGKEGR9EqiIY+YBpNRQyjqYhSMJqK/o+mohEMAGVga2jJTerWAAAAAElFTkSuQmCC">';
+            richi_btn_uList.addEventListener('click', () => { this.#useCommand("insertUnorderedList") });
+            richi_header.appendChild(richi_btn_uList);
         }
 
         if (this.#settings.components.clear) {
